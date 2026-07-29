@@ -36,3 +36,8 @@ npm run dev
 ```sh
 npm run build
 ```
+
+### backend
+``` sh
+php artisan serve
+```
