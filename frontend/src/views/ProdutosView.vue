@@ -89,17 +89,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <div style="padding: 40px; font-family: Arial; max-width: 1000px; margin: 0 auto;">
-    <h1>Produtos - Peças de Bicicleta</h1>
+    <div style="padding: 40px; font-family: Arial; max-width: 1000px; margin: 0 auto; color: white;">    <h1>Produtos - Peças de Bicicleta</h1>
 
     <p>
       <a href="/">← Voltar ao Dashboard</a>
     </p>
 
     <!-- Formulário -->
-    <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
-      <h2>{{ editando ? 'Editar Produto' : 'Novo Produto' }}</h2>
-
+    <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin-bottom: 30px; color: #222;">      <h2>{{ editando ? 'Editar Produto' : 'Novo Produto' }}</h2>
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
         <div>
           <label>Nome</label><br>
