@@ -27,6 +27,19 @@ class ProdutoController extends Controller
 
         $produto = Produto::create($dados);
 
+        // Registra a movimentação inicial (entrada)
+        if ($produto->quantidade > 0) {
+            \App\Models\MovimentacaoEstoque::create([
+                'produto_id' => $produto->id,
+                'tipo' => 'entrada',
+                'quantidade' => $produto->quantidade,
+                'quantidade_anterior' => 0,
+                'quantidade_nova' => $produto->quantidade,
+                'motivo' => 'Cadastro inicial do produto',
+                'user_id' => 1,
+            ]);
+        }
+
         return response()->json($produto->load('categoria'), 201);
     }
 
@@ -47,7 +60,25 @@ class ProdutoController extends Controller
             'categoria_id' => 'required|exists:categorias,id',
         ]);
 
+        $quantidadeAnterior = $produto->quantidade;
+
         $produto->update($dados);
+
+        // Se a quantidade mudou, registra a movimentação
+        if ($quantidadeAnterior != $produto->quantidade) {
+            $tipo = $produto->quantidade > $quantidadeAnterior ? 'entrada' : 'saida';
+            $quantidadeMovimentada = abs($produto->quantidade - $quantidadeAnterior);
+
+            \App\Models\MovimentacaoEstoque::create([
+                'produto_id' => $produto->id,
+                'tipo' => $tipo,
+                'quantidade' => $quantidadeMovimentada,
+                'quantidade_anterior' => $quantidadeAnterior,
+                'quantidade_nova' => $produto->quantidade,
+                'motivo' => 'Alteração manual da quantidade',
+                'user_id' => 1,
+            ]);
+        }
 
         return response()->json($produto->load('categoria'));
     }

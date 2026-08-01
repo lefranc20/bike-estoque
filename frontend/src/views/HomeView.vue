@@ -26,7 +26,8 @@ onMounted(async () => {
 <template>
   <div style="padding: 40px; font-family: Arial;">
     <p>
-      <a href="/produtos">Ir para Produtos →</a>
+      <a href="/produtos">Ir para Produtos →</a> |
+      <a href="/movimentacoes">Ver Movimentações →</a>
     </p>
     <h1>Controle de Estoque - Peças de Bicicleta</h1>
 
