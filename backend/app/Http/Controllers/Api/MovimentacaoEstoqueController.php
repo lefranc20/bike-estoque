@@ -47,9 +47,18 @@ class MovimentacaoEstoqueController extends Controller
             'quantidade_anterior' => $quantidadeAnterior,
             'quantidade_nova' => $produto->quantidade,
             'motivo' => $dados['motivo'] ?? null,
-            'user_id' => 1, // depois vamos melhorar isso com login
+            'user_id' => $this->getAuthenticatedUserId(),
         ]);
 
         return response()->json($movimentacao->load('produto'), 201);
+    }
+
+    private function getAuthenticatedUserId(): int
+    {
+        if (! auth()->check()) {
+            abort(401, 'Usuário não autenticado.');
+        }
+
+        return auth()->id();
     }
 }

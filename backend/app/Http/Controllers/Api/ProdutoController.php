@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Produto;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ProdutoController extends Controller
@@ -36,7 +37,7 @@ class ProdutoController extends Controller
                 'quantidade_anterior' => 0,
                 'quantidade_nova' => $produto->quantidade,
                 'motivo' => 'Cadastro inicial do produto',
-                'user_id' => 1,
+                'user_id' => $this->getAuthenticatedUserId(),
             ]);
         }
 
@@ -76,7 +77,7 @@ class ProdutoController extends Controller
                 'quantidade_anterior' => $quantidadeAnterior,
                 'quantidade_nova' => $produto->quantidade,
                 'motivo' => 'Alteração manual da quantidade',
-                'user_id' => 1,
+                'user_id' => $this->getAuthenticatedUserId(),
             ]);
         }
 
@@ -88,5 +89,24 @@ class ProdutoController extends Controller
         $produto->delete();
 
         return response()->json(null, 204);
+    }
+
+    private function getAuthenticatedUserId(): int
+    {
+        return auth()->id() ?? $this->getDefaultUserId();
+    }
+
+    private function getDefaultUserId(): int
+    {
+        $user = User::first();
+
+        if (! $user) {
+            $user = User::factory()->create([
+                'name' => 'Usuário padrão',
+                'email' => 'default@example.com',
+            ]);
+        }
+
+        return $user->id;
     }
 }

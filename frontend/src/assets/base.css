@@ -23,15 +23,15 @@
 
 /* semantic color variables for this project */
 :root {
-  --color-background: var(--vt-c-white);
-  --color-background-soft: var(--vt-c-white-soft);
-  --color-background-mute: var(--vt-c-white-mute);
+  --color-background: #070b17;
+  --color-background-soft: #111827;
+  --color-background-mute: #1f2937;
 
-  --color-border: var(--vt-c-divider-light-2);
-  --color-border-hover: var(--vt-c-divider-light-1);
+  --color-border: #374151;
+  --color-border-hover: #4b5563;
 
-  --color-heading: var(--vt-c-text-light-1);
-  --color-text: var(--vt-c-text-light-1);
+  --color-heading: #f8fafc;
+  --color-text: #e5e7eb;
 
   --section-gap: 160px;
 }
