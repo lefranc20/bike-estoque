@@ -5,6 +5,8 @@ import api from '../services/api'
 const totalProdutos = ref(0)
 const totalCategorias = ref(0)
 const valorTotal = ref(0)
+const produtosAbaixoDoMinimo = ref([])
+const mostrarProdutosAbaixoDoMinimo = ref(false)
 const carregando = ref(true)
 const erro = ref(null)
 
@@ -22,6 +24,7 @@ onMounted(async () => {
     totalProdutos.value = resposta.data.total_produtos
     totalCategorias.value = resposta.data.total_categorias
     valorTotal.value = resposta.data.valor_total_estoque
+    produtosAbaixoDoMinimo.value = resposta.data.produtos_abaixo_do_minimo
   } catch (e) {
     erro.value = 'Não foi possível conectar com o backend'
     console.error(e)
@@ -62,6 +65,23 @@ onMounted(async () => {
         <p class="card-label">Valor Total em Estoque</p>
         <p class="card-value">{{ valorTotalFormatado }}</p>
       </div>
+      <div class="dashboard-card">
+        <p class="card-label">Produtos com estoque abaixo do mínimo</p>
+        <p class="card-value">{{ produtosAbaixoDoMinimo.length }}</p>
+        <button class="button-secondary" @click="mostrarProdutosAbaixoDoMinimo = !mostrarProdutosAbaixoDoMinimo">
+          {{ mostrarProdutosAbaixoDoMinimo ? 'Ocultar lista' : 'Ver produtos' }}
+        </button>
+      </div>
+    </div>
+
+    <div v-if="mostrarProdutosAbaixoDoMinimo" class="dashboard-status">
+      <h3 class="status-summary">Produtos abaixo do mínimo</h3>
+      <ul v-if="produtosAbaixoDoMinimo.length" class="status-summary">
+        <li v-for="produto in produtosAbaixoDoMinimo" :key="produto.id">
+          {{ produto.nome }} — estoque: {{ produto.quantidade }} (mínimo: {{ produto.estoque_minimo }})
+        </li>
+      </ul>
+      <p v-else class="status-summary">Nenhum produto está abaixo do mínimo.</p>
     </div>
 
     <div class="dashboard-status">

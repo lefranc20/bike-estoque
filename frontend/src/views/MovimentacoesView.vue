@@ -3,14 +3,29 @@ import { ref, onMounted } from 'vue'
 import api from '../services/api'
 
 const movimentacoes = ref([])
+const produtos = ref([])
 const carregando = ref(true)
 const erro = ref(null)
+const sucesso = ref(null)
+const errors = ref({})
 
-async function carregarMovimentacoes() {
+const form = ref({
+  produto_id: '',
+  tipo: 'entrada',
+  quantidade: 1,
+  motivo: ''
+})
+
+async function carregarDados() {
   try {
     carregando.value = true
-    const resposta = await api.get('/movimentacoes')
-    movimentacoes.value = resposta.data
+    erro.value = null
+    const [resMovimentacoes, resProdutos] = await Promise.all([
+      api.get('/movimentacoes'),
+      api.get('/produtos')
+    ])
+    movimentacoes.value = resMovimentacoes.data
+    produtos.value = resProdutos.data
   } catch (e) {
     erro.value = 'Erro ao carregar movimentações'
     console.error(e)
@@ -19,21 +34,100 @@ async function carregarMovimentacoes() {
   }
 }
 
+async function salvarMovimentacao() {
+  errors.value = {}
+  sucesso.value = null
+  erro.value = null
+
+  if (!form.value.produto_id) {
+    errors.value.produto_id = ['Selecione um produto']
+    return
+  }
+
+  try {
+    await api.post('/movimentacoes', {
+      produto_id: Number(form.value.produto_id),
+      tipo: form.value.tipo,
+      quantidade: Number(form.value.quantidade),
+      motivo: form.value.motivo
+    })
+
+    form.value = {
+      produto_id: '',
+      tipo: 'entrada',
+      quantidade: 1,
+      motivo: ''
+    }
+    sucesso.value = 'Movimentação registrada com sucesso.'
+    await carregarDados()
+  } catch (e) {
+    if (e.response?.status === 422) {
+      errors.value = e.response.data.errors || {}
+      erro.value = e.response.data.message || 'Dados inválidos, corrija os campos.'
+    } else {
+      erro.value = 'Erro ao registrar movimentação'
+    }
+    console.error(e)
+  }
+}
+
 onMounted(() => {
-  carregarMovimentacoes()
+  carregarDados()
 })
 </script>
 
 <template>
-  <div class="page-shell">
+  <div class="page-view">
     <div class="page-header">
       <div>
         <h1 class="page-title">Movimentações de Estoque</h1>
-        <p class="page-subtitle">Acompanhe entradas, saídas e ajustes em um painel uniforme.</p>
+        <p class="page-subtitle">Registre entradas, saídas e ajustes para manter o estoque sempre atualizado.</p>
       </div>
       <div class="page-toolbar">
         <a href="/">← Voltar ao Dashboard</a>
         <a href="/produtos">Ir para Produtos</a>
+      </div>
+    </div>
+
+    <div class="page-panel page-panel--grid">
+      <div>
+        <h2>Nova movimentação</h2>
+        <div v-if="erro" class="status-inline error">{{ erro }}</div>
+        <div v-if="sucesso" class="status-inline success">{{ sucesso }}</div>
+
+        <div class="form-grid">
+          <div class="form-field">
+            <label>Produto</label>
+            <select v-model="form.produto_id">
+              <option value="">Selecione...</option>
+              <option v-for="produto in produtos" :key="produto.id" :value="produto.id">{{ produto.nome }}</option>
+            </select>
+            <div v-if="errors.produto_id" class="status-inline error">{{ errors.produto_id[0] }}</div>
+          </div>
+
+          <div class="form-field">
+            <label>Tipo</label>
+            <select v-model="form.tipo">
+              <option value="entrada">Entrada</option>
+              <option value="saida">Saída</option>
+              <option value="ajuste">Ajuste</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label>Quantidade</label>
+            <input v-model.number="form.quantidade" type="number" min="1" />
+          </div>
+
+          <div class="form-field form-grid-full">
+            <label>Motivo</label>
+            <textarea v-model="form.motivo" placeholder="Ex.: Compra, venda, correção de estoque..."></textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="button-primary" @click="salvarMovimentacao">Registrar movimentação</button>
+        </div>
       </div>
     </div>
 

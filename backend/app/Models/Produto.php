@@ -16,6 +16,8 @@ class Produto extends Model
         'categoria_id',
     ];
 
+    protected $appends = ['esta_abaixo_do_minimo', 'esta_em_estoque_critico'];
+
     public function categoria()
     {
         return $this->belongsTo(Categoria::class);
@@ -24,5 +26,15 @@ class Produto extends Model
     public function movimentacoes()
     {
         return $this->hasMany(MovimentacaoEstoque::class);
+    }
+
+    public function getEstaAbaixoDoMinimoAttribute(): bool
+    {
+        return (int) $this->quantidade < (int) $this->estoque_minimo;
+    }
+
+    public function getEstaEmEstoqueCriticoAttribute(): bool
+    {
+        return (int) $this->quantidade <= (int) $this->estoque_minimo / 2;
     }
 }

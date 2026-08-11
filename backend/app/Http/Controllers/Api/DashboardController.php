@@ -14,6 +14,7 @@ class DashboardController extends Controller
         $totalProdutos = Produto::count();
         $totalCategorias = Categoria::count();
         $valorTotalEstoque = Produto::selectRaw('SUM(preco * quantidade) as total')->value('total') ?? 0;
+        $produtosAbaixoDoMinimo = Produto::whereColumn('quantidade', '<', 'estoque_minimo')->with('categoria')->get();
         $produtosEstoqueBaixo = Produto::whereColumn('quantidade', '<=', 'estoque_minimo')->with('categoria')->get();
         $ultimasMovimentacoes = MovimentacaoEstoque::with('produto')->latest()->take(5)->get();
 
@@ -21,6 +22,7 @@ class DashboardController extends Controller
             'total_produtos' => $totalProdutos,
             'total_categorias' => $totalCategorias,
             'valor_total_estoque' => $valorTotalEstoque,
+            'produtos_abaixo_do_minimo' => $produtosAbaixoDoMinimo,
             'produtos_estoque_baixo' => $produtosEstoqueBaixo,
             'ultimas_movimentacoes' => $ultimasMovimentacoes,
         ]);

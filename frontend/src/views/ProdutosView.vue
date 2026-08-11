@@ -133,7 +133,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="page-shell">
+  <div class="page-view">
     <div class="page-header">
       <div>
         <h1 class="page-title">Produtos</h1>
@@ -237,14 +237,19 @@ onMounted(() => {
         </thead>
         <tbody>
           <tr v-for="produto in produtos" :key="produto.id">
-            <td>{{ produto.nome }}</td>
-            <td>{{ produto.codigo }}</td>
-            <td>R$ {{ produto.preco.toFixed(2) }}</td>
-            <td>{{ produto.quantidade }}</td>
+            <td>
+              {{ produto.nome }}
+              <span v-if="produto.esta_abaixo_do_minimo" class="status-inline error">Abaixo do mínimo</span>
+            </td>
+            <td class="numeric">{{ produto.codigo }}</td>
+            <td class="numeric currency">R$ {{ produto.preco.toFixed(2) }}</td>
+            <td class="numeric">{{ produto.quantidade }}</td>
             <td>{{ produto.categoria?.nome }}</td>
             <td>
-              <button class="button-primary" @click="editar(produto)">Editar</button>
-              <button class="button-secondary" @click="excluir(produto.id)">Excluir</button>
+              <div class="table-actions">
+                <button class="button-primary" @click="editar(produto)">Editar</button>
+                <button class="button-secondary" @click="excluir(produto.id)">Excluir</button>
+              </div>
             </td>
           </tr>
         </tbody>
