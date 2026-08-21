@@ -1,5 +1,9 @@
 <script setup>
 defineProps({
+  aberto: {
+    type: Boolean,
+    default: false
+  },
   produtos: {
     type: Array,
     default: () => []
@@ -14,17 +18,25 @@ defineProps({
   }
 })
 
-defineEmits(['delete'])
+defineEmits(['delete', 'toggle'])
 </script>
 
 <template>
-  <section class="page-panel product-list-panel table-card">
-    <p class="panel-kicker">Visão geral</p>
-    <h2>Listagem de Produtos</h2>
-    <div v-if="carregando">Carregando...</div>
-    <div v-else-if="erro" class="status-inline error">{{ erro }}</div>
+  <section class="page-panel product-list-panel table-card" :class="{ 'is-open': aberto }">
+    <button class="panel-heading" type="button" :aria-expanded="aberto" @click="$emit('toggle')">
+      <span>
+        <span class="panel-kicker">Visão geral</span>
+        <span class="panel-title">Listagem de Produtos</span>
+      </span>
+      <span class="panel-toggle" aria-hidden="true">{{ aberto ? '−' : '+' }}</span>
+    </button>
 
-    <table v-else>
+    <Transition name="panel-expand">
+      <div v-show="aberto" class="panel-content">
+      <div v-if="carregando">Carregando...</div>
+      <div v-else-if="erro" class="status-inline error">{{ erro }}</div>
+
+      <table v-else>
       <thead>
         <tr>
           <th>Nome</th>
@@ -52,10 +64,12 @@ defineEmits(['delete'])
           </td>
         </tr>
       </tbody>
-    </table>
+      </table>
 
-    <p v-if="!carregando && !erro && produtos.length === 0" class="status-summary">
-      Nenhum produto cadastrado ainda.
-    </p>
+      <p v-if="!carregando && !erro && produtos.length === 0" class="status-summary">
+        Nenhum produto cadastrado ainda.
+      </p>
+      </div>
+    </Transition>
   </section>
 </template>

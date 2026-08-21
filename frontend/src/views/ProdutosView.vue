@@ -27,6 +27,11 @@ const categoriaForm = ref({ nome: '' })
 const categoriaErro = ref(null)
 const categoriaErrors = ref({})
 const categoriaSucesso = ref(null)
+const cardAberto = ref(null)
+
+function alternarCard(card) {
+  cardAberto.value = cardAberto.value === card ? null : card
+}
 
 async function carregarDados() {
   try {
@@ -156,13 +161,15 @@ onMounted(() => {
       subtitle="Gerencie produtos, categorias e estoque com layout desktop consistente."
     />
 
-    <div class="product-sections">
+    <div class="product-sections" :class="{ 'has-open-card': cardAberto }">
       <ProductForm
         v-model="form"
         :categorias="categorias"
         :errors="errors"
         :error="erro"
+        :aberto="cardAberto === 'produto'"
         @save="salvar"
+        @toggle="alternarCard('produto')"
       />
       <CategoryManager
         v-model="categoriaForm"
@@ -170,16 +177,19 @@ onMounted(() => {
         :errors="categoriaErrors"
         :error="categoriaErro"
         :sucesso="categoriaSucesso"
+        :aberto="cardAberto === 'categoria'"
         @save="salvarCategoria"
         @delete="excluirCategoria"
+        @toggle="alternarCard('categoria')"
+      />
+      <ProductList
+        :produtos="produtos"
+        :carregando="carregando"
+        :erro="erro"
+        :aberto="cardAberto === 'produtos'"
+        @delete="excluir"
+        @toggle="alternarCard('produtos')"
       />
     </div>
-
-    <ProductList
-      :produtos="produtos"
-      :carregando="carregando"
-      :erro="erro"
-      @delete="excluir"
-    />
   </div>
 </template>

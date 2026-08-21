@@ -2,6 +2,10 @@
 const form = defineModel({ type: Object, required: true })
 
 defineProps({
+  aberto: {
+    type: Boolean,
+    default: false
+  },
   categorias: {
     type: Array,
     default: () => []
@@ -20,37 +24,47 @@ defineProps({
   }
 })
 
-defineEmits(['save', 'delete'])
+defineEmits(['save', 'delete', 'toggle'])
 </script>
 
 <template>
-  <section class="page-panel category-manager-panel">
-    <p class="panel-kicker">Organização</p>
-    <h2>Nova Categoria</h2>
-    <div v-if="error" class="status-inline error">{{ error }}</div>
-    <div v-if="sucesso" class="status-inline success">{{ sucesso }}</div>
+  <section class="page-panel category-manager-panel" :class="{ 'is-open': aberto }">
+    <button class="panel-heading" type="button" :aria-expanded="aberto" @click="$emit('toggle')">
+      <span>
+        <span class="panel-kicker">Organização</span>
+        <span class="panel-title">Nova Categoria</span>
+      </span>
+      <span class="panel-toggle" aria-hidden="true">{{ aberto ? '−' : '+' }}</span>
+    </button>
 
-    <div class="form-grid">
-      <div class="form-field form-grid-full">
-        <label for="categoria-nome">Nome</label>
-        <input id="categoria-nome" v-model="form.nome" />
-        <div v-if="errors.nome" class="status-inline error">{{ errors.nome[0] }}</div>
+    <Transition name="panel-expand">
+      <div v-show="aberto" class="panel-content">
+      <div v-if="error" class="status-inline error">{{ error }}</div>
+      <div v-if="sucesso" class="status-inline success">{{ sucesso }}</div>
+
+      <div class="form-grid">
+        <div class="form-field form-grid-full">
+          <label for="categoria-nome">Nome</label>
+          <input id="categoria-nome" v-model="form.nome" />
+          <div v-if="errors.nome" class="status-inline error">{{ errors.nome[0] }}</div>
+        </div>
       </div>
-    </div>
 
-    <div class="form-actions">
-      <button class="button-primary" type="button" @click="$emit('save')">Salvar Categoria</button>
-    </div>
+      <div class="form-actions">
+        <button class="button-primary" type="button" @click.stop="$emit('save')">Salvar Categoria</button>
+      </div>
 
-    <div v-if="categorias.length" class="categoria-lista">
-      <h3>Categorias cadastradas</h3>
-      <ul class="categoria-lista__items">
-        <li v-for="categoria in categorias" :key="categoria.id" class="categoria-item">
-          <span>{{ categoria.nome }}</span>
-          <button class="button-secondary" type="button" @click="$emit('delete', categoria.id)">Remover</button>
-        </li>
-      </ul>
-    </div>
+      <div v-if="categorias.length" class="categoria-lista">
+        <h3>Categorias cadastradas</h3>
+        <ul class="categoria-lista__items">
+          <li v-for="categoria in categorias" :key="categoria.id" class="categoria-item">
+            <span>{{ categoria.nome }}</span>
+            <button class="button-secondary" type="button" @click.stop="$emit('delete', categoria.id)">Remover</button>
+          </li>
+        </ul>
+      </div>
+      </div>
+    </Transition>
   </section>
 </template>
 
