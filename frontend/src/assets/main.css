@@ -110,6 +110,12 @@ a,
   background: rgba(37, 99, 235, 0.12);
 }
 
+.dashboard-actions a.router-link-exact-active {
+  background: rgba(37, 99, 235, 0.24);
+  border-color: rgba(96, 165, 250, 0.5);
+  color: #dbeafe;
+}
+
 .dashboard-subtitle {
   max-width: 680px;
   margin-top: 0.75rem;
@@ -206,6 +212,14 @@ a,
   background: #08111f;
 }
 
+.dashboard-page.page-view {
+  width: min(100%, 1500px);
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 72px 64px 48px;
+  box-sizing: border-box;
+}
+
 .page-view .page-header,
 .page-view .page-panel,
 .page-view .table-card {
@@ -252,6 +266,69 @@ a,
   gap: 1.5rem;
 }
 
+.product-sections {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(320px, 1fr);
+  gap: 1.8rem;
+  align-items: start;
+  margin-bottom: 2rem;
+}
+
+.product-sections .page-panel {
+  margin-bottom: 0;
+  min-height: 100%;
+  position: relative;
+  overflow: hidden;
+  padding: 2rem;
+  background: linear-gradient(145deg, rgba(20, 32, 56, 0.98), rgba(12, 22, 40, 0.96));
+}
+
+.product-sections .page-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: #38bdf8;
+}
+
+.product-sections .category-manager-panel::before {
+  background: #34d399;
+}
+
+.panel-kicker {
+  margin: 0 0 0.55rem;
+  color: #7dd3fc;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.category-manager-panel .panel-kicker {
+  color: #6ee7b7;
+}
+
+.product-sections .page-panel h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.35rem;
+  letter-spacing: -0.01em;
+}
+
+.product-list-panel h2 {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+  color: #f8fafc;
+}
+
+.product-list-panel {
+  border-top: 3px solid #60a5fa;
+  padding: 2rem;
+}
+
+.product-list-panel .panel-kicker {
+  color: #93c5fd;
+}
+
 .page-panel h2 {
   margin-top: 0;
   margin-bottom: 1rem;
@@ -285,6 +362,15 @@ a,
   border: 1px solid rgba(148, 163, 184, 0.18);
   background: #111827;
   color: #e2e8f0;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  outline: none;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.14);
 }
 
 .form-field textarea {
@@ -361,6 +447,7 @@ a,
 .table-card table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 760px;
 }
 
 .table-card th,
@@ -458,6 +545,10 @@ a,
 @media (max-width: 1050px) {
   .dashboard-grid {
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+
+  .product-sections {
+    grid-template-columns: 1fr;
   }
 }
 

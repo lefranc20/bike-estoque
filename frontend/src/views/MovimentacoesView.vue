@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import api from '../services/api'
+import DashboardHeader from '../components/DashboardHeader.vue'
 
 const movimentacoes = ref([])
 const produtos = ref([])
@@ -77,17 +78,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="page-view">
-    <div class="page-header">
-      <div>
-        <h1 class="page-title">Movimentações de Estoque</h1>
-        <p class="page-subtitle">Registre entradas, saídas e ajustes para manter o estoque sempre atualizado.</p>
-      </div>
-      <div class="page-toolbar">
-        <a href="/">← Voltar ao Dashboard</a>
-        <a href="/produtos">Ir para Produtos</a>
-      </div>
-    </div>
+  <div class="dashboard-page page-view">
+    <DashboardHeader
+      eyebrow="Movimentações"
+      title="Movimentações de Estoque"
+      subtitle="Registre entradas, saídas e ajustes para manter o estoque sempre atualizado."
+    />
 
     <div class="page-panel page-panel--grid">
       <div>
