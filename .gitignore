@@ -1,4 +1,18 @@
 # ========================
+# Arquivos de ambiente
+# ========================
+.env
+.env.*
+!.env.example
+
+# Ignora .env em subpastas do projeto
+backend/.env
+backend/.env.*
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+
+# ========================
 # Sistema Operacional
 # ========================
 .DS_Store
@@ -20,9 +34,6 @@ desktop.ini
 # ========================
 backend/vendor/
 backend/node_modules/
-backend/.env
-backend/.env.backup
-backend/.env.production
 backend/storage/*.key
 backend/storage/logs/*
 backend/storage/framework/cache/*
@@ -34,26 +45,35 @@ backend/database/*.sqlite-journal
 backend/public/storage
 backend/public/hot
 backend/.phpunit.result.cache
+backend/.phpunit.cache
 backend/Homestead.json
 backend/Homestead.yaml
 backend/auth.json
-backend/npm-debug.log
-backend/yarn-error.log
+backend/npm-debug.log*
+backend/yarn-debug.log*
+backend/pnpm-debug.log*
+backend/.env.backup
+backend/.env.production
+backend/.env.local
 
 # ========================
 # Frontend (Vue + Vite)
 # ========================
 frontend/node_modules/
 frontend/dist/
-frontend/.env
+frontend/dist-ssr/
+frontend/coverage/
+frontend/*.local
+frontend/.DS_Store
+frontend/.vite/
+frontend/*.timestamp-*-*.mjs
+frontend/.eslintcache
+frontend/.cache/
 frontend/.env.local
 frontend/.env.*.local
-frontend/*.local
-frontend/coverage/
-frontend/.DS_Store
 
 # ========================
-# Logs e arquivos temporários
+# Logs / temporários
 # ========================
 *.log
 *.tmp
@@ -63,6 +83,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+lerna-debug.log*
 
 # ========================
 # Outros
@@ -70,4 +91,27 @@ pnpm-debug.log*
 *.bak
 *.old
 *.orig
-.env
+*.sln
+*.sw?
+*.tsbuildinfo
+*.pid
+*.sqlite
+*.sqlite-journal
+
+# ========================
+# Build / assets gerais do projeto
+# ========================
+/public/build
+/public/fonts-manifest.dev.json
+/public/hot
+/public/storage
+/storage/*.key
+/storage/pail
+/vendor
+/node_modules
+/.phpactor.json
+/.codex
+/.cursor/
+/.nova
+/.zed
+/coverage

@@ -19,7 +19,6 @@ const form = ref({
   categoria_id: null
 })
 
-const editando = ref(false)
 const categoriaForm = ref({ nome: '' })
 const categoriaErro = ref(null)
 const categoriaErrors = ref({})
@@ -55,7 +54,6 @@ function limparFormulario() {
     estoque_minimo: 5,
     categoria_id: null
   }
-  editando.value = false
   errors.value = {}
 }
 
@@ -69,11 +67,7 @@ async function salvar() {
   }
 
   try {
-    if (editando.value) {
-      await api.put(`/produtos/${form.value.id}`, form.value)
-    } else {
-      await api.post('/produtos', form.value)
-    }
+    await api.post('/produtos', form.value)
     limparFormulario()
     await carregarDados()
   } catch (e) {
@@ -110,9 +104,27 @@ async function salvarCategoria() {
   }
 }
 
-function editar(produto) {
-  form.value = { ...produto }
-  editando.value = true
+async function excluirCategoria(id) {
+  const categoria = categorias.value.find((item) => item.id === id)
+  if (!categoria) return
+
+  if (!confirm(`Tem certeza que deseja excluir a categoria "${categoria.nome}"?`)) return
+
+  try {
+    await api.delete(`/categorias/${id}`)
+    categoriaSucesso.value = 'Categoria removida com sucesso.'
+    categoriaErro.value = null
+    categoriaErrors.value = {}
+    await carregarDados()
+
+    if (form.value.categoria_id === id) {
+      form.value.categoria_id = null
+    }
+  } catch (e) {
+    categoriaErro.value = 'Erro ao excluir categoria.'
+    categoriaSucesso.value = null
+    console.error(e)
+  }
 }
 
 async function excluir(id) {
@@ -146,7 +158,7 @@ onMounted(() => {
 
     <div class="page-panel page-panel--grid">
       <div>
-        <h2>{{ editando ? 'Editar Produto' : 'Novo Produto' }}</h2>
+        <h2>Novo Produto</h2>
         <div v-if="erro" class="status-inline error">{{ erro }}</div>
 
         <div class="form-grid">
@@ -196,8 +208,7 @@ onMounted(() => {
         </div>
 
         <div class="form-actions">
-          <button class="button-primary" @click="salvar">{{ editando ? 'Atualizar' : 'Salvar' }}</button>
-          <button v-if="editando" class="button-secondary" @click="limparFormulario">Cancelar</button>
+          <button class="button-primary" @click="salvar">Salvar</button>
         </div>
       </div>
 
@@ -216,6 +227,16 @@ onMounted(() => {
 
         <div class="form-actions">
           <button class="button-primary" @click="salvarCategoria">Salvar Categoria</button>
+        </div>
+
+        <div v-if="categorias.length" class="categoria-lista">
+          <h3>Categorias cadastradas</h3>
+          <ul class="categoria-lista__items">
+            <li v-for="categoria in categorias" :key="categoria.id" class="categoria-item">
+              <span>{{ categoria.nome }}</span>
+              <button class="button-secondary" @click="excluirCategoria(categoria.id)">Remover</button>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -247,7 +268,6 @@ onMounted(() => {
             <td>{{ produto.categoria?.nome }}</td>
             <td>
               <div class="table-actions">
-                <button class="button-primary" @click="editar(produto)">Editar</button>
                 <button class="button-secondary" @click="excluir(produto.id)">Excluir</button>
               </div>
             </td>
@@ -259,3 +279,49 @@ onMounted(() => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.categoria-lista {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.categoria-lista h3 {
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  color: #e2e8f0;
+}
+
+.categoria-lista__items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.categoria-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.7);
+  color: #e2e8f0;
+}
+
+.categoria-item span {
+  color: #e2e8f0;
+}
+
+.categoria-item button {
+  padding: 0.45rem 0.75rem;
+  background: #334155;
+  color: #f8fafc;
+  border-radius: 10px;
+}
+</style>
