@@ -1,15 +1,22 @@
 @import './base.css';
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
   font-weight: normal;
 }
 
 body {
   background: #091421;
   color: #dbe4ee;
+  margin: 0;
+}
+
+#app {
+  width: 100%;
+  min-height: 100vh;
 }
 
 input,
@@ -50,10 +57,13 @@ a,
 }
 
 .dashboard-page {
+  width: min(100%, 1500px);
+  margin: 0 auto;
   padding: 58px 80px;
   min-height: 100vh;
   background: #08111f;
   color: #e2e8f0;
+  box-sizing: border-box;
 }
 
 .dashboard-header {
@@ -459,17 +469,5 @@ a,
 
   .dashboard-actions {
     justify-content: flex-start;
-  }
-}
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
   }
 }
