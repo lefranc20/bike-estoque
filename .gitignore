@@ -112,6 +112,7 @@ lerna-debug.log*
 /.phpactor.json
 /.codex
 /.cursor/
+/.claude/
 /.nova
 /.zed
 /coverage
