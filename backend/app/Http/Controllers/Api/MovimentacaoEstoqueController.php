@@ -7,6 +7,7 @@ use App\Models\MovimentacaoEstoque;
 use App\Models\Produto;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class MovimentacaoEstoqueController extends Controller
 {
@@ -60,15 +61,9 @@ class MovimentacaoEstoqueController extends Controller
             return auth()->id();
         }
 
-        $user = User::first();
-
-        if (! $user) {
-            $user = User::factory()->create([
-                'name' => 'Usuário padrão',
-                'email' => 'default@example.com',
-            ]);
-        }
-
-        return $user->id;
+        return User::firstOrCreate(
+            ['email' => 'default@example.com'],
+            ['name' => 'Usuário padrão', 'password' => Str::random(32)]
+        )->id;
     }
 }
