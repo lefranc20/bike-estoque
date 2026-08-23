@@ -23,4 +23,4 @@ RUN mkdir -p storage/framework/cache \
     bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
-CMD sh -c "php artisan migrate --force && php artisan config:cache && php artisan serve --host=0.0.0.0 --port=\${PORT:-10000}"
+CMD sh -c "php artisan migrate --force && php artisan db:seed --class=AdminUserSeeder --force && php artisan db:seed --class=PadraoUserSeeder --force && php artisan config:cache && php artisan serve --host=0.0.0.0 --port=\${PORT:-10000}"

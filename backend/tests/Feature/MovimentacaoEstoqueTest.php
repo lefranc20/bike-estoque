@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Categoria;
 use App\Models\Produto;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -11,8 +12,10 @@ class MovimentacaoEstoqueTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_pode_registrar_uma_entrada_e_uma_saida_sem_autenticacao(): void
+    public function test_pode_registrar_uma_entrada_e_uma_saida(): void
     {
+        $this->actingAs(User::factory()->create());
+
         $categoria = Categoria::create(['nome' => 'Acessórios']);
         $produto = Produto::create([
             'nome' => 'Freio de disco',

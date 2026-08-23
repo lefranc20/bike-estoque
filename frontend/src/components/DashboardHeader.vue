@@ -1,4 +1,15 @@
 <script setup>
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '../stores/auth'
+
+const auth = useAuthStore()
+const router = useRouter()
+
+async function sair() {
+  await auth.logout()
+  router.push('/login')
+}
+
 defineProps({
   eyebrow: {
     type: String,
@@ -22,6 +33,10 @@ defineProps({
         <span>{{ eyebrow }}</span>
         <span class="breadcrumb-separator">•</span>
         <span>Desktop</span>
+        <template v-if="auth.user">
+          <span class="breadcrumb-separator">•</span>
+          <span>{{ auth.user.name }}</span>
+        </template>
       </p>
       <h1>{{ title }}</h1>
       <p class="dashboard-subtitle">{{ subtitle }}</p>
@@ -30,6 +45,7 @@ defineProps({
       <RouterLink to="/">Dashboard</RouterLink>
       <RouterLink to="/produtos">Produtos</RouterLink>
       <RouterLink to="/movimentacoes">Movimentações</RouterLink>
+      <button class="logout-button" type="button" @click="sair">Sair</button>
     </nav>
   </div>
 </template>
@@ -81,9 +97,35 @@ defineProps({
 
 .dashboard-actions {
   display: flex;
+  align-items: center;
   gap: 0.9rem;
   flex-wrap: wrap;
+  flex-shrink: 0;
   padding-top: 0.5rem;
+}
+
+.dashboard-actions button {
+  min-width: auto;
+  padding: 0.8rem 1.2rem;
+  border-radius: 999px;
+}
+
+.logout-button {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(248, 113, 113, 0.4);
+  color: #fca5a5;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  line-height: 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logout-button:hover {
+  background: rgba(239, 68, 68, 0.22);
+  border-color: rgba(248, 113, 113, 0.6);
+  color: #fecaca;
 }
 
 .dashboard-actions a {

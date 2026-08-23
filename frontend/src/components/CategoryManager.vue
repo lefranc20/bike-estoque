@@ -21,6 +21,10 @@ defineProps({
   sucesso: {
     type: String,
     default: null
+  },
+  isAdmin: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -59,7 +63,14 @@ defineEmits(['save', 'delete', 'toggle'])
         <ul class="categoria-lista__items">
           <li v-for="categoria in categorias" :key="categoria.id" class="categoria-item">
             <span>{{ categoria.nome }}</span>
-            <button class="button-secondary" type="button" @click.stop="$emit('delete', categoria.id)">Remover</button>
+            <button
+              v-if="isAdmin"
+              class="button-secondary"
+              type="button"
+              @click.stop="$emit('delete', categoria.id)"
+            >
+              Remover
+            </button>
           </li>
         </ul>
       </div>

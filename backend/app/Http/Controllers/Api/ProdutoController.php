@@ -4,12 +4,19 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Produto;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class ProdutoController extends Controller
+class ProdutoController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('admin', only: ['update', 'destroy']),
+        ];
+    }
+
     public function index()
     {
         return Produto::with('categoria')->get();
@@ -38,7 +45,7 @@ class ProdutoController extends Controller
                 'quantidade_anterior' => 0,
                 'quantidade_nova' => $produto->quantidade,
                 'motivo' => 'Cadastro inicial do produto',
-                'user_id' => $this->getAuthenticatedUserId(),
+                'user_id' => auth()->id(),
             ]);
         }
 
@@ -78,7 +85,7 @@ class ProdutoController extends Controller
                 'quantidade_anterior' => $quantidadeAnterior,
                 'quantidade_nova' => $produto->quantidade,
                 'motivo' => 'Alteração manual da quantidade',
-                'user_id' => $this->getAuthenticatedUserId(),
+                'user_id' => auth()->id(),
             ]);
         }
 
@@ -90,18 +97,5 @@ class ProdutoController extends Controller
         $produto->delete();
 
         return response()->json(null, 204);
-    }
-
-    private function getAuthenticatedUserId(): int
-    {
-        return auth()->id() ?? $this->getDefaultUserId();
-    }
-
-    private function getDefaultUserId(): int
-    {
-        return User::firstOrCreate(
-            ['email' => 'default@example.com'],
-            ['name' => 'Usuário padrão', 'password' => Str::random(32)]
-        )->id;
     }
 }

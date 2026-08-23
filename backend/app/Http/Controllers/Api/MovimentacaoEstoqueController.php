@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\MovimentacaoEstoque;
 use App\Models\Produto;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class MovimentacaoEstoqueController extends Controller
 {
@@ -49,21 +47,9 @@ class MovimentacaoEstoqueController extends Controller
             'quantidade_anterior' => $quantidadeAnterior,
             'quantidade_nova' => $produto->quantidade,
             'motivo' => $dados['motivo'] ?? null,
-            'user_id' => $this->getAuthenticatedUserId(),
+            'user_id' => auth()->id(),
         ]);
 
         return response()->json($movimentacao->load('produto'), 201);
-    }
-
-    private function getAuthenticatedUserId(): int
-    {
-        if (auth()->check()) {
-            return auth()->id();
-        }
-
-        return User::firstOrCreate(
-            ['email' => 'default@example.com'],
-            ['name' => 'Usuário padrão', 'password' => Str::random(32)]
-        )->id;
     }
 }

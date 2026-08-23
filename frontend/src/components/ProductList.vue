@@ -19,6 +19,10 @@ defineProps({
   sucesso: {
     type: String,
     default: null
+  },
+  isAdmin: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -63,9 +67,10 @@ defineEmits(['delete', 'toggle'])
           <td class="numeric">{{ produto.quantidade }}</td>
           <td>{{ produto.categoria?.nome }}</td>
           <td>
-            <div class="table-actions">
+            <div v-if="isAdmin" class="table-actions">
               <button class="button-secondary" type="button" @click="$emit('delete', produto.id)">Excluir</button>
             </div>
+            <span v-else class="status-inline">—</span>
           </td>
         </tr>
       </tbody>

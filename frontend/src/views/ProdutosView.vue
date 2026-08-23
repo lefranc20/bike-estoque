@@ -5,6 +5,9 @@ import DashboardHeader from '../components/DashboardHeader.vue'
 import ProductForm from '../components/ProductForm.vue'
 import CategoryManager from '../components/CategoryManager.vue'
 import ProductList from '../components/ProductList.vue'
+import { useAuthStore } from '../stores/auth'
+
+const auth = useAuthStore()
 
 const produtos = ref([])
 const categorias = ref([])
@@ -193,6 +196,7 @@ onMounted(() => {
         :errors="categoriaErrors"
         :error="categoriaErro"
         :sucesso="categoriaSucesso"
+        :is-admin="auth.isAdmin"
         :aberto="cardAberto === 'categoria'"
         @save="salvarCategoria"
         @delete="excluirCategoria"
@@ -203,6 +207,7 @@ onMounted(() => {
         :carregando="carregando"
         :erro="erro"
         :sucesso="produtoSucesso"
+        :is-admin="auth.isAdmin"
         :aberto="cardAberto === 'produtos'"
         @delete="excluir"
         @toggle="alternarCard('produtos')"

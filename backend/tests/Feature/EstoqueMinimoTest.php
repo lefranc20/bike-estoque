@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Categoria;
 use App\Models\Produto;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -13,6 +14,8 @@ class EstoqueMinimoTest extends TestCase
 
     public function test_a_api_indica_quando_o_produto_esta_abaixo_do_estoque_minimo(): void
     {
+        $this->actingAs(User::factory()->create());
+
         $categoria = Categoria::create(['nome' => 'Acessórios']);
 
         Produto::create([
