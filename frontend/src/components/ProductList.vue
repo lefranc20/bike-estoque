@@ -15,6 +15,10 @@ defineProps({
   erro: {
     type: String,
     default: null
+  },
+  sucesso: {
+    type: String,
+    default: null
   }
 })
 
@@ -35,14 +39,15 @@ defineEmits(['delete', 'toggle'])
       <div v-show="aberto" class="panel-content">
       <div v-if="carregando">Carregando...</div>
       <div v-else-if="erro" class="status-inline error">{{ erro }}</div>
+      <div v-if="sucesso" class="status-inline success">{{ sucesso }}</div>
 
       <table v-else>
       <thead>
         <tr>
           <th>Nome</th>
-          <th>Código</th>
-          <th>Preço</th>
-          <th>Qtd</th>
+          <th class="numeric">Código</th>
+          <th class="numeric">Preço</th>
+          <th class="numeric">Qtd</th>
           <th>Categoria</th>
           <th>Ações</th>
         </tr>

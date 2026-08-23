@@ -14,6 +14,10 @@ defineProps({
     type: String,
     default: null
   },
+  sucesso: {
+    type: String,
+    default: null
+  },
   categorias: {
     type: Array,
     default: () => []
@@ -36,6 +40,7 @@ defineEmits(['save', 'toggle'])
     <Transition name="panel-expand">
       <div v-show="aberto" class="panel-content">
       <div v-if="error" class="status-inline error">{{ error }}</div>
+      <div v-if="sucesso" class="status-inline success">{{ sucesso }}</div>
 
       <div class="form-grid">
       <div class="form-field">

@@ -61,6 +61,9 @@ async function salvarMovimentacao() {
     }
     sucesso.value = 'Movimentação registrada com sucesso.'
     await carregarDados()
+    setTimeout(() => {
+      sucesso.value = null
+    }, 5000)
   } catch (e) {
     if (e.response?.status === 422) {
       errors.value = e.response.data.errors || {}

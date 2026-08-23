@@ -11,6 +11,7 @@ const categorias = ref([])
 const carregando = ref(true)
 const erro = ref(null)
 const errors = ref({})
+const produtoSucesso = ref(null)
 
 const form = ref({
   id: null,
@@ -79,6 +80,10 @@ async function salvar() {
     await api.post('/produtos', form.value)
     limparFormulario()
     await carregarDados()
+    produtoSucesso.value = 'Produto salvo com sucesso.'
+    setTimeout(() => {
+      produtoSucesso.value = null
+    }, 5000)
   } catch (e) {
     if (e.response?.status === 422) {
       errors.value = e.response.data.errors || {}
@@ -101,6 +106,9 @@ async function salvarCategoria() {
     categoriaErro.value = null
     categoriaErrors.value = {}
     await carregarDados()
+    setTimeout(() => {
+      categoriaSucesso.value = null
+    }, 5000)
   } catch (e) {
     categoriaErrors.value = {}
     if (e.response?.status === 422) {
@@ -125,6 +133,9 @@ async function excluirCategoria(id) {
     categoriaErro.value = null
     categoriaErrors.value = {}
     await carregarDados()
+    setTimeout(() => {
+      categoriaSucesso.value = null
+    }, 5000)
 
     if (form.value.categoria_id === id) {
       form.value.categoria_id = null
@@ -142,6 +153,10 @@ async function excluir(id) {
   try {
     await api.delete(`/produtos/${id}`)
     await carregarDados()
+    produtoSucesso.value = 'Produto removido com sucesso.'
+    setTimeout(() => {
+      produtoSucesso.value = null
+    }, 5000)
   } catch (e) {
     alert('Erro ao excluir produto')
     console.error(e)
@@ -167,6 +182,7 @@ onMounted(() => {
         :categorias="categorias"
         :errors="errors"
         :error="erro"
+        :sucesso="produtoSucesso"
         :aberto="cardAberto === 'produto'"
         @save="salvar"
         @toggle="alternarCard('produto')"
@@ -186,6 +202,7 @@ onMounted(() => {
         :produtos="produtos"
         :carregando="carregando"
         :erro="erro"
+        :sucesso="produtoSucesso"
         :aberto="cardAberto === 'produtos'"
         @delete="excluir"
         @toggle="alternarCard('produtos')"
