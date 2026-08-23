@@ -1,89 +1,49 @@
-# Bike Estoque
+# 🚲 Bike Estoque
 
-Sistema de controle de estoque para revendedora de peças de bicicleta.
+Sistema de controle de estoque para uma revendedora de peças de bicicleta: cadastro de produtos e categorias, controle de quantidade e registro de entradas, saídas e ajustes de estoque.
 
-Desenvolvido com **Laravel** (API) + **Vue.js** (frontend).
-
----
-
-## Tecnologias utilizadas
-
-- **Backend:** Laravel 11 + Sanctum
-- **Frontend:** Vue 3 + Vite + Vue Router + Axios
-- **Banco de dados:** SQLite (fácil de usar em desenvolvimento)
-- **Estilo:** CSS puro (simples e direto)
+**🔗 Demo online:** [bike-estoque.vercel.app](https://bike-estoque.vercel.app/)
 
 ---
 
-## Funcionalidades
+## Tecnologias
 
-- Cadastro de categorias de peças
-- Cadastro de produtos (peças de bicicleta)
-- Controle de quantidade em estoque
-- Estoque mínimo com alerta
-- Dashboard com resumo do estoque
-- Movimentações de estoque (entrada, saída e ajuste)
+<p align="left">
+  <img src="https://skillicons.dev/icons?i=php,laravel,vue,vite,sqlite,postgres" alt="PHP, Laravel, Vue, Vite, SQLite, PostgreSQL" />
+</p>
+
+PHP 8.3+ · Laravel 11 + Sanctum · Vue 3 · Vite · SQLite (local) · PostgreSQL (produção)
 
 ---
 
-## Como rodar o projeto
+## Como rodar localmente
 
-### 1. Pré-requisitos
-
-Você precisa ter instalado:
-
-- PHP 8.2 ou superior
-- Composer
-- Node.js 18 ou superior
-- Extensões do PHP: `fileinfo`, `pdo_sqlite` e `sqlite3`
-
-### 2. Clonar o repositório
+### Backend
 
 ```bash
-git clone https://github.com/SEU-USUARIO/bike-estoque.git
-cd bike-estoque
-```
-
-### 3. Configurar o Backend
-``` bash
 cd backend
 composer install
 copy .env.example .env
 php artisan key:generate
-```
 
-Crie o banco de dados SQLite:
-``` bash
-Bashtype nul > database\database.sqlite
-```
-
-Rode as migrations:
-``` sh
+type nul > database\database.sqlite
 php artisan migrate
-```
-
-Inicie o servidor:
-``` bash 
 php artisan serve
 ```
 
-O backend vai rodar em: http://127.0.0.1:8000
+API disponível em `http://127.0.0.1:8000`.
 
-### 4. Configurar o Frontend
-Abra outro terminal:
-``` bash 
+### Frontend
+
+```bash
 cd frontend
 npm install
 ```
 
-Crie o arquivo .env na pasta frontend com o conteúdo:
-```
-VITE_API_URL=http://127.0.0.1:8000/api
-```
+Crie um `.env` na pasta `frontend` seguindo o exemplo do arquivo `.env.example`.
 
-Inicie o frontend:
-``` bash
+```bash
 npm run dev
 ```
 
-O frontend vai rodar em: http://localhost:5173
+Aplicação disponível em `http://localhost:5173`.
