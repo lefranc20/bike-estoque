@@ -45,6 +45,7 @@ defineProps({
       <RouterLink to="/">Dashboard</RouterLink>
       <RouterLink to="/produtos">Produtos</RouterLink>
       <RouterLink to="/movimentacoes">Movimentações</RouterLink>
+      <RouterLink to="/relatorios">Relatórios</RouterLink>
       <button class="logout-button" type="button" @click="sair">Sair</button>
     </nav>
   </div>
