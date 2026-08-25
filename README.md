@@ -6,13 +6,9 @@ Sistema de controle de estoque para uma revendedora de peças de bicicleta: cada
 
 ---
 
-## Tecnologias
+## Tecnologias Utilizadas
 
-<p align="left">
-  <img src="https://skillicons.dev/icons?i=php,laravel,vue,vite,sqlite,postgres" alt="PHP, Laravel, Vue, Vite, SQLite, PostgreSQL" />
-</p>
-
-PHP 8.3+ · Laravel 11 + Sanctum · Vue 3 · Vite · SQLite (local) · PostgreSQL (produção)
+[![PHP 8.3+](https://img.shields.io/badge/PHP-8.3%2B-777BB4?logo=php&logoColor=white)](https://www.php.net/) [![Laravel 11](https://img.shields.io/badge/Laravel-11-FF2D20?logo=laravel&logoColor=white)](https://laravel.com/) [![Laravel Sanctum](https://img.shields.io/badge/Sanctum-FF2D20?logo=laravel&logoColor=white)](https://laravel.com/docs/sanctum) [![Vue 3](https://img.shields.io/badge/Vue-3-4FC08D?logo=vuedotjs&logoColor=white)](https://vuejs.org/) [![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)](https://vite.dev/) [![SQLite (local)](https://img.shields.io/badge/SQLite-local-07405E?logo=sqlite&logoColor=white)](https://www.sqlite.org/) [![PostgreSQL (produção)](https://img.shields.io/badge/PostgreSQL-produção-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 
 ---
 
@@ -28,8 +24,11 @@ php artisan key:generate
 
 type nul > database\database.sqlite
 php artisan migrate
+php artisan db:seed
 php artisan serve
 ```
+
+Antes do `db:seed`, defina `ADMIN_USERNAME`/`ADMIN_PASSWORD` (e, opcionalmente, `PADRAO_USERNAME`/`PADRAO_PASSWORD`) no `.env` — são as credenciais criadas para login local.
 
 API disponível em `http://127.0.0.1:8000`.
 
