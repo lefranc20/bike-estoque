@@ -48,6 +48,11 @@ onMounted(async () => {
       subtitle="Visualize os principais indicadores do estoque em um painel estável, claro e otimizado para desktop."
     />
 
+    <div class="dashboard-hero">
+      <p class="card-label">Valor Total em Estoque</p>
+      <p class="card-value">{{ valorTotalFormatado }}</p>
+    </div>
+
     <div class="dashboard-grid">
       <div class="dashboard-card">
         <p class="card-label">Total de Produtos</p>
@@ -56,10 +61,6 @@ onMounted(async () => {
       <div class="dashboard-card">
         <p class="card-label">Total de Categorias</p>
         <p class="card-value">{{ totalCategorias }}</p>
-      </div>
-      <div class="dashboard-card card-accent">
-        <p class="card-label">Valor Total em Estoque</p>
-        <p class="card-value">{{ valorTotalFormatado }}</p>
       </div>
       <div class="dashboard-card">
         <p class="card-label">Produtos com estoque abaixo do mínimo</p>
@@ -104,9 +105,29 @@ onMounted(async () => {
   box-sizing: border-box;
 }
 
+.dashboard-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  background: linear-gradient(135deg, #1d9bf0 0%, #0ea5e9 18%, #3b82f6 100%);
+  border-radius: 22px;
+  box-shadow: 0 22px 48px rgba(37, 99, 235, 0.24);
+  padding: 2rem 2.2rem;
+  margin-bottom: 1.8rem;
+}
+
+.dashboard-hero .card-label,
+.dashboard-hero .card-value {
+  color: #f8fbff;
+}
+
+.dashboard-hero .card-value {
+  font-size: clamp(2.4rem, 4.5vw, 3.6rem);
+}
+
 .dashboard-grid {
   display: grid;
-  grid-template-columns: 1.75fr 1fr;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.8rem;
   margin-bottom: 1.6rem;
   align-items: stretch;
@@ -117,15 +138,13 @@ onMounted(async () => {
   border: 1px solid rgba(148, 163, 184, 0.14);
   border-radius: 22px;
   box-shadow: 0 18px 40px rgba(15, 23, 42, 0.22);
-  padding: 1.6rem 1.7rem;
-  min-height: 190px;
+  padding: 1.8rem 1.9rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }
 
 .dashboard-card .card-label {
-  margin: 0 0 1rem;
+  margin: 0 0 0.9rem;
   font-size: 0.8rem;
   letter-spacing: 0.13em;
   text-transform: uppercase;
@@ -135,55 +154,15 @@ onMounted(async () => {
 
 .dashboard-card .card-value {
   margin: 0;
-  font-size: clamp(2.3rem, 4vw, 4rem);
+  font-size: clamp(2rem, 2.6vw, 2.6rem);
   font-weight: 700;
   color: #f8fafc;
   line-height: 1;
 }
 
-.card-accent {
-  grid-column: 1 / 2;
-  min-height: 220px;
-  background: linear-gradient(135deg, #1d9bf0 0%, #0ea5e9 18%, #3b82f6 100%);
-  border: none;
-  box-shadow: 0 22px 48px rgba(37, 99, 235, 0.24);
-  min-width: 0;
-}
-
-.dashboard-card:nth-child(4) {
-  grid-column: 2 / 3;
-  min-height: 220px;
-}
-
-@media (min-width: 1100px) {
-  .dashboard-grid {
-    grid-template-columns: 1.9fr 1fr;
-  }
-
-  .card-accent {
-    grid-column: 1 / 2;
-    min-height: 240px;
-  }
-}
-
-.card-accent .card-label,
-.card-accent .card-value {
-  color: #f8fbff;
-}
-
-.dashboard-card:nth-child(4) {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.dashboard-card:nth-child(4) .card-value {
-  font-size: clamp(2.2rem, 3vw, 3.2rem);
-  margin-bottom: 1rem;
-}
-
-.button-secondary {
-  align-self: center;
+.dashboard-card .button-secondary {
+  align-self: flex-start;
+  margin-top: 1.2rem;
   min-width: 140px;
   padding: 0.7rem 1rem;
   border: 1px solid rgba(148, 163, 184, 0.2);
@@ -192,6 +171,18 @@ onMounted(async () => {
   color: #e2e8f0;
   font-weight: 600;
   cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .dashboard-status {
