@@ -115,7 +115,7 @@ onMounted(() => {
 
           <div class="form-field">
             <label>Quantidade</label>
-            <input v-model.number="form.quantidade" type="number" min="1" />
+            <input v-model.number="form.quantidade" type="number" :min="form.tipo === 'ajuste' ? 0 : 1" />
           </div>
 
           <div class="form-field form-grid-full">

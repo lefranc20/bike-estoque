@@ -19,7 +19,7 @@ class MovimentacaoEstoqueController extends Controller
         $dados = $request->validate([
             'produto_id' => 'required|exists:produtos,id',
             'tipo' => 'required|in:entrada,saida,ajuste',
-            'quantidade' => 'required|integer|min:1',
+            'quantidade' => ['required', 'integer', $request->input('tipo') === 'ajuste' ? 'min:0' : 'min:1'],
             'motivo' => 'nullable|string',
         ]);
 
