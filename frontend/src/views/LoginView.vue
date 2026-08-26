@@ -46,7 +46,7 @@ async function entrar() {
         :aria-expanded="mostrarInfoTeste"
         @click.stop="mostrarInfoTeste = !mostrarInfoTeste"
       >
-        AVISO: Versão de testes
+        AVISO: Versão de testes — {{ mostrarInfoTeste ? 'ocultar usuários' : 'ver usuários' }} {{ mostrarInfoTeste ? '▲' : '▼' }}
       </button>
 
       <div v-if="mostrarInfoTeste" class="login-info-box">
