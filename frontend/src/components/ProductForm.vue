@@ -39,8 +39,12 @@ defineEmits(['save', 'toggle'])
 
     <Transition name="panel-expand">
       <div v-show="aberto" class="panel-content">
-      <div v-if="error" class="status-inline error">{{ error }}</div>
-      <div v-if="sucesso" class="status-inline success">{{ sucesso }}</div>
+      <Transition name="fade">
+        <div v-if="error" class="status-inline error">{{ error }}</div>
+      </Transition>
+      <Transition name="fade">
+        <div v-if="sucesso" class="status-inline success">{{ sucesso }}</div>
+      </Transition>
 
       <div class="form-grid">
       <div class="form-field">

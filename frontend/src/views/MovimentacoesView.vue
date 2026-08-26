@@ -91,8 +91,12 @@ onMounted(() => {
     <div class="page-panel page-panel--grid">
       <div>
         <h2>Nova movimentação</h2>
-        <div v-if="erro" class="status-inline error">{{ erro }}</div>
-        <div v-if="sucesso" class="status-inline success">{{ sucesso }}</div>
+        <Transition name="fade">
+          <div v-if="erro" class="status-inline error">{{ erro }}</div>
+        </Transition>
+        <Transition name="fade">
+          <div v-if="sucesso" class="status-inline success">{{ sucesso }}</div>
+        </Transition>
 
         <div class="form-grid">
           <div class="form-field">

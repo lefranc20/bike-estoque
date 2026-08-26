@@ -43,8 +43,12 @@ defineEmits(['save', 'delete', 'toggle'])
 
     <Transition name="panel-expand">
       <div v-show="aberto" class="panel-content">
-      <div v-if="error" class="status-inline error">{{ error }}</div>
-      <div v-if="sucesso" class="status-inline success">{{ sucesso }}</div>
+      <Transition name="fade">
+        <div v-if="error" class="status-inline error">{{ error }}</div>
+      </Transition>
+      <Transition name="fade">
+        <div v-if="sucesso" class="status-inline success">{{ sucesso }}</div>
+      </Transition>
 
       <div class="form-grid">
         <div class="form-field form-grid-full">
@@ -111,6 +115,12 @@ defineEmits(['save', 'delete', 'toggle'])
   border-radius: 12px;
   background: rgba(15, 23, 42, 0.7);
   color: #e2e8f0;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.categoria-item:hover {
+  border-color: rgba(147, 197, 253, 0.3);
+  background: rgba(15, 23, 42, 0.9);
 }
 
 .categoria-item span {

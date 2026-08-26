@@ -41,9 +41,12 @@ defineEmits(['delete', 'toggle'])
 
     <Transition name="panel-expand">
       <div v-show="aberto" class="panel-content">
+      <Transition name="fade">
+        <div v-if="sucesso" class="status-inline success">{{ sucesso }}</div>
+      </Transition>
+
       <div v-if="carregando">Carregando...</div>
       <div v-else-if="erro" class="status-inline error">{{ erro }}</div>
-      <div v-if="sucesso" class="status-inline success">{{ sucesso }}</div>
 
       <table v-else>
       <thead>

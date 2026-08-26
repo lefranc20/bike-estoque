@@ -51,7 +51,9 @@ async function exportarMovimentacoes(formato) {
       subtitle="Baixe o inventário atual ou o histórico de movimentações em CSV ou PDF."
     />
 
-    <div v-if="erro" class="status-inline error">{{ erro }}</div>
+    <Transition name="fade">
+      <div v-if="erro" class="status-inline error">{{ erro }}</div>
+    </Transition>
 
     <div class="page-panel">
       <h2>Inventário atual</h2>
