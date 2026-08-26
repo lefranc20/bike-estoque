@@ -18,6 +18,26 @@ const usuariosDeTeste = [
   { papel: 'Padrão', usuario: 'padrao', senha: 'padrao123' }
 ]
 
+const mouseX = ref(0.5)
+const mouseY = ref(0.5)
+
+function onMouseMove(evento) {
+  const rect = evento.currentTarget.getBoundingClientRect()
+  mouseX.value = (evento.clientX - rect.left) / rect.width
+  mouseY.value = (evento.clientY - rect.top) / rect.height
+}
+
+function onMouseLeave() {
+  mouseX.value = 0.5
+  mouseY.value = 0.5
+}
+
+function parallax(profundidade) {
+  const dx = (mouseX.value - 0.5) * 36 * profundidade
+  const dy = (mouseY.value - 0.5) * 36 * profundidade
+  return { transform: `translate(${dx}px, ${dy}px)` }
+}
+
 async function entrar() {
   erro.value = null
   carregando.value = true
@@ -39,58 +59,80 @@ async function entrar() {
 
 <template>
   <div class="login-page">
-    <form class="page-panel login-panel" @submit.prevent="entrar">
-      <button
-        class="login-badge"
-        type="button"
-        :aria-expanded="mostrarInfoTeste"
-        @click.stop="mostrarInfoTeste = !mostrarInfoTeste"
-      >
-        AVISO: Versão de testes — {{ mostrarInfoTeste ? 'ocultar usuários' : 'ver usuários' }} {{ mostrarInfoTeste ? '▲' : '▼' }}
-      </button>
+    <div class="login-shell">
+      <div class="login-visual" @mousemove="onMouseMove" @mouseleave="onMouseLeave">
+        <div class="blob-wrap" :style="parallax(0.6)">
+          <div class="blob blob-a"></div>
+        </div>
+        <div class="blob-wrap" :style="parallax(1)">
+          <div class="blob blob-b"></div>
+        </div>
+        <div class="blob-wrap" :style="parallax(1.5)">
+          <div class="blob blob-c"></div>
+        </div>
 
-      <div v-if="mostrarInfoTeste" class="login-info-box">
-        <p>
-          Esta é uma versão de testes do Bike Estoque. Os dados cadastrados aqui podem ser apagados
-          a qualquer momento.
-        </p>
-        <table class="login-info-table">
-          <thead>
-            <tr>
-              <th>Papel</th>
-              <th>Usuário</th>
-              <th>Senha</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="u in usuariosDeTeste" :key="u.usuario">
-              <td>{{ u.papel }}</td>
-              <td>{{ u.usuario }}</td>
-              <td>{{ u.senha }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="login-visual-content">
+          <span class="login-visual-emoji">🚲</span>
+          <h1 class="login-visual-title">Bike Estoque</h1>
+          <p class="login-visual-subtitle">
+            Controle de produtos, categorias e movimentações de estoque num só lugar.
+          </p>
+        </div>
       </div>
 
-      <h1 class="login-title">Bike Estoque</h1>
-      <p class="login-subtitle">Entre com sua conta pra continuar.</p>
+      <form class="login-form-panel" @submit.prevent="entrar">
+        <button
+          class="login-badge"
+          type="button"
+          :aria-expanded="mostrarInfoTeste"
+          @click.stop="mostrarInfoTeste = !mostrarInfoTeste"
+        >
+          AVISO: Versão de testes — {{ mostrarInfoTeste ? 'ocultar usuários' : 'ver usuários' }} {{ mostrarInfoTeste ? '▲' : '▼' }}
+        </button>
 
-      <div v-if="erro" class="status-inline error">{{ erro }}</div>
+        <div v-if="mostrarInfoTeste" class="login-info-box">
+          <p>
+            Esta é uma versão de testes do Bike Estoque. Os dados cadastrados aqui podem ser apagados
+            a qualquer momento.
+          </p>
+          <table class="login-info-table">
+            <thead>
+              <tr>
+                <th>Papel</th>
+                <th>Usuário</th>
+                <th>Senha</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="u in usuariosDeTeste" :key="u.usuario">
+                <td>{{ u.papel }}</td>
+                <td>{{ u.usuario }}</td>
+                <td>{{ u.senha }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-      <div class="form-field">
-        <label for="login-username">Usuário</label>
-        <input id="login-username" v-model="username" type="text" autocomplete="username" required />
-      </div>
+        <h2 class="login-title">Entrar</h2>
+        <p class="login-subtitle">Acesse sua conta para continuar.</p>
 
-      <div class="form-field">
-        <label for="login-password">Senha</label>
-        <input id="login-password" v-model="password" type="password" autocomplete="current-password" required />
-      </div>
+        <div v-if="erro" class="status-inline error">{{ erro }}</div>
 
-      <button class="button-primary login-button" type="submit" :disabled="carregando">
-        {{ carregando ? 'Entrando...' : 'Entrar' }}
-      </button>
-    </form>
+        <div class="form-field">
+          <label for="login-username">Usuário</label>
+          <input id="login-username" v-model="username" type="text" autocomplete="username" required />
+        </div>
+
+        <div class="form-field">
+          <label for="login-password">Senha</label>
+          <input id="login-password" v-model="password" type="password" autocomplete="current-password" required />
+        </div>
+
+        <button class="button-primary login-button" type="submit" :disabled="carregando">
+          {{ carregando ? 'Entrando...' : 'Entrar' }}
+        </button>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -104,12 +146,117 @@ async function entrar() {
   padding: 24px;
 }
 
-.login-panel {
-  width: min(100%, 420px);
-  margin-bottom: 0;
+.login-shell {
+  width: min(100%, 920px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 22px 48px rgba(15, 23, 42, 0.34);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.login-visual {
+  position: relative;
+  overflow: hidden;
+  min-height: 460px;
+  background: linear-gradient(165deg, #0d1c36 0%, #08111f 65%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+}
+
+.blob-wrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: transform 0.35s ease-out;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.55;
+  animation: float ease-in-out infinite;
+}
+
+.blob-a {
+  width: 280px;
+  height: 280px;
+  top: -60px;
+  left: -50px;
+  background: #3b82f6;
+  animation-duration: 10s;
+}
+
+.blob-b {
+  width: 240px;
+  height: 240px;
+  bottom: -50px;
+  right: -40px;
+  background: #0ea5e9;
+  animation-duration: 12s;
+  animation-delay: -4s;
+}
+
+.blob-c {
+  width: 200px;
+  height: 200px;
+  top: 42%;
+  left: 32%;
+  background: #22d3ee;
+  animation-duration: 14s;
+  animation-delay: -7s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(18px, -14px) scale(1.08);
+  }
+}
+
+.login-visual-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 2.5rem;
+}
+
+.login-visual-emoji {
+  display: inline-block;
+  font-size: 2.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.login-visual-title {
+  margin: 0 0 0.6rem;
+  color: #f8fafc;
+  font-size: 1.9rem;
+  font-weight: 700;
+}
+
+.login-visual-subtitle {
+  margin: 0 auto;
+  max-width: 320px;
+  color: #cbd5e1;
+  line-height: 1.6;
+}
+
+.login-form-panel {
+  background: rgba(15, 23, 42, 0.92);
+  padding: 2.75rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .login-badge {
+  align-self: flex-start;
   display: inline-flex;
   margin-bottom: 1rem;
   padding: 0.3rem 0.75rem;
@@ -179,5 +326,15 @@ async function entrar() {
 .login-button {
   width: 100%;
   margin-top: 0.5rem;
+}
+
+@media (max-width: 860px) {
+  .login-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .login-visual {
+    min-height: 220px;
+  }
 }
 </style>
