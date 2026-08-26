@@ -20,6 +20,26 @@ const valorTotalFormatado = computed(() => {
   }).format(valorTotal.value || 0)
 })
 
+const mouseX = ref(0.5)
+const mouseY = ref(0.5)
+
+function onMouseMove(evento) {
+  const rect = evento.currentTarget.getBoundingClientRect()
+  mouseX.value = (evento.clientX - rect.left) / rect.width
+  mouseY.value = (evento.clientY - rect.top) / rect.height
+}
+
+function onMouseLeave() {
+  mouseX.value = 0.5
+  mouseY.value = 0.5
+}
+
+function parallax(profundidade) {
+  const dx = (mouseX.value - 0.5) * 90 * profundidade
+  const dy = (mouseY.value - 0.5) * 50 * profundidade
+  return { transform: `translate(${dx}px, ${dy}px)` }
+}
+
 onMounted(async () => {
   try {
     const resposta = await api.get('/dashboard')
@@ -41,7 +61,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="dashboard-page">
+  <div class="dashboard-page" @mousemove="onMouseMove" @mouseleave="onMouseLeave">
     <DashboardHeader
       eyebrow="Visão geral"
       title="Controle de Estoque"
@@ -49,8 +69,17 @@ onMounted(async () => {
     />
 
     <div class="dashboard-hero">
-      <p class="card-label">Valor Total em Estoque</p>
-      <p class="card-value">{{ valorTotalFormatado }}</p>
+      <div class="blob-wrap" :style="parallax(0.6)">
+        <div class="blob blob-a"></div>
+      </div>
+      <div class="blob-wrap" :style="parallax(1.2)">
+        <div class="blob blob-b"></div>
+      </div>
+
+      <div class="dashboard-hero-content">
+        <p class="card-label">Valor Total em Estoque</p>
+        <p class="card-value">{{ valorTotalFormatado }}</p>
+      </div>
     </div>
 
     <div class="dashboard-grid">
@@ -71,15 +100,28 @@ onMounted(async () => {
       </div>
     </div>
 
-    <div v-if="mostrarProdutosAbaixoDoMinimo" class="dashboard-status">
-      <template v-if="produtosAbaixoDoMinimo.length">
-        <h3 class="status-summary">Produtos abaixo do mínimo</h3>
-        <ul class="status-summary">
-        <li v-for="produto in produtosAbaixoDoMinimo" :key="produto.id">
-          {{ produto.nome }} — estoque: {{ produto.quantidade }} (mínimo: {{ produto.estoque_minimo }})
-        </li>
-        </ul>
-      </template>
+    <div v-if="mostrarProdutosAbaixoDoMinimo" class="dashboard-status alert-panel">
+      <h3 class="alert-panel-title">
+        <span class="alert-icon">!</span> Produtos abaixo do mínimo
+      </h3>
+      <div v-if="produtosAbaixoDoMinimo.length" class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th class="numeric">Estoque</th>
+              <th class="numeric">Mínimo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="produto in produtosAbaixoDoMinimo" :key="produto.id">
+              <td>{{ produto.nome }}</td>
+              <td class="numeric">{{ produto.quantidade }}</td>
+              <td class="numeric">{{ produto.estoque_minimo }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <p v-else class="status-summary">Nenhum produto está abaixo do mínimo.</p>
     </div>
 
@@ -106,14 +148,64 @@ onMounted(async () => {
 }
 
 .dashboard-hero {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
+  position: relative;
+  overflow: hidden;
   background: linear-gradient(135deg, #1d9bf0 0%, #0ea5e9 18%, #3b82f6 100%);
   border-radius: 22px;
   box-shadow: 0 22px 48px rgba(37, 99, 235, 0.24);
   padding: 2rem 2.2rem;
   margin-bottom: 1.8rem;
+}
+
+.blob-wrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: transform 0.35s ease-out;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(55px);
+  opacity: 0.45;
+  animation: float ease-in-out infinite;
+}
+
+.blob-a {
+  width: 200px;
+  height: 200px;
+  top: -120px;
+  left: 15%;
+  background: #ffffff;
+  animation-duration: 10s;
+}
+
+.blob-b {
+  width: 200px;
+  height: 200px;
+  bottom: -120px;
+  right: 8%;
+  background: #f472b6;
+  animation-duration: 13s;
+  animation-delay: -5s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(16px, -12px) scale(1.08);
+  }
+}
+
+.dashboard-hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
 }
 
 .dashboard-hero .card-label,
@@ -201,13 +293,37 @@ onMounted(async () => {
   line-height: 1.6;
 }
 
-.status-summary ul {
-  margin: 0.75rem 0 0;
-  padding-left: 1.25rem;
+.alert-panel {
+  border-color: rgba(248, 113, 113, 0.28);
+  background: rgba(127, 29, 29, 0.14);
 }
 
-.status-summary li + li {
-  margin-top: 0.35rem;
+.alert-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 1rem;
+  color: #fecaca;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.alert-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: rgba(248, 113, 113, 0.18);
+  color: #f87171;
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.alert-panel .table-card {
+  background: rgba(15, 23, 42, 0.6);
 }
 
 .status-message,
