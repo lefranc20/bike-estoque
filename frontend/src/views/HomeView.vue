@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from 'vue'
 import api from '../services/api'
 import DashboardHeader from '../components/DashboardHeader.vue'
+import MovementChart from '../components/MovementChart.vue'
 
 const totalProdutos = ref(0)
 const totalCategorias = ref(0)
@@ -19,6 +20,54 @@ const valorTotalFormatado = computed(() => {
     minimumFractionDigits: 2,
   }).format(valorTotal.value || 0)
 })
+
+const periodosGrafico = [
+  { chave: '7d', label: '7 dias', granularidade: 'dia', quantidade: 7 },
+  { chave: '14d', label: '14 dias', granularidade: 'dia', quantidade: 14 },
+  { chave: '30d', label: '30 dias', granularidade: 'dia', quantidade: 30 },
+  { chave: '6m', label: '6 meses', granularidade: 'mes', quantidade: 6 },
+  { chave: '12m', label: '12 meses', granularidade: 'mes', quantidade: 12 },
+  { chave: '5a', label: '5 anos', granularidade: 'ano', quantidade: 5 }
+]
+
+const LIMITES_GRANULARIDADE = { dia: 90, mes: 36, ano: 10 }
+
+const periodoSelecionado = ref('14d')
+const personalizado = ref({ granularidade: 'dia', quantidade: 14 })
+const movimentacoesPorPeriodo = ref([])
+const granularidadeAtual = ref('dia')
+
+const limitePersonalizado = computed(() => LIMITES_GRANULARIDADE[personalizado.value.granularidade])
+
+function aoTrocarPeriodo() {
+  if (periodoSelecionado.value !== 'personalizado') {
+    carregarGrafico()
+  }
+}
+
+async function carregarGrafico() {
+  let granularidade
+  let quantidade
+
+  if (periodoSelecionado.value === 'personalizado') {
+    granularidade = personalizado.value.granularidade
+    quantidade = Math.min(Math.max(1, personalizado.value.quantidade || 1), limitePersonalizado.value)
+  } else {
+    const periodo = periodosGrafico.find((p) => p.chave === periodoSelecionado.value)
+    granularidade = periodo.granularidade
+    quantidade = periodo.quantidade
+  }
+
+  try {
+    const resposta = await api.get('/dashboard/movimentacoes-por-periodo', {
+      params: { granularidade, quantidade }
+    })
+    movimentacoesPorPeriodo.value = resposta.data
+    granularidadeAtual.value = granularidade
+  } catch (e) {
+    console.error(e)
+  }
+}
 
 const mouseX = ref(0.5)
 const mouseY = ref(0.5)
@@ -41,6 +90,8 @@ function parallax(profundidade) {
 }
 
 onMounted(async () => {
+  carregarGrafico()
+
   try {
     const resposta = await api.get('/dashboard')
     totalProdutos.value = resposta.data.total_produtos
@@ -98,6 +149,38 @@ onMounted(async () => {
           {{ mostrarProdutosAbaixoDoMinimo ? 'Ocultar lista' : 'Ver produtos' }}
         </button>
       </div>
+    </div>
+
+    <div class="dashboard-status movement-chart-panel">
+      <div class="movement-chart-header">
+        <h3 class="movement-chart-title">Movimentações</h3>
+        <select v-model="periodoSelecionado" class="movement-chart-select" @change="aoTrocarPeriodo">
+          <option v-for="periodo in periodosGrafico" :key="periodo.chave" :value="periodo.chave">
+            {{ periodo.label }}
+          </option>
+          <option value="personalizado">Personalizado…</option>
+        </select>
+      </div>
+
+      <div v-if="periodoSelecionado === 'personalizado'" class="movement-chart-custom">
+        <input
+          v-model.number="personalizado.quantidade"
+          type="number"
+          min="1"
+          :max="limitePersonalizado"
+          class="movement-chart-custom-input"
+        />
+        <select v-model="personalizado.granularidade" class="movement-chart-custom-select">
+          <option value="dia">dias</option>
+          <option value="mes">meses</option>
+          <option value="ano">anos</option>
+        </select>
+        <button type="button" class="button-secondary movement-chart-custom-apply" @click="carregarGrafico">
+          Aplicar
+        </button>
+      </div>
+
+      <MovementChart :dados="movimentacoesPorPeriodo" :granularidade="granularidadeAtual" />
     </div>
 
     <div v-if="mostrarProdutosAbaixoDoMinimo" class="dashboard-status alert-panel">
@@ -303,6 +386,60 @@ onMounted(async () => {
   margin: 0;
   color: #cbd5e1;
   line-height: 1.6;
+}
+
+.movement-chart-panel {
+  margin-bottom: 1.6rem;
+}
+
+.movement-chart-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  margin-bottom: 1.1rem;
+}
+
+.movement-chart-title {
+  margin: 0;
+  color: #f8fafc;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.movement-chart-select {
+  padding: 0.4rem 0.7rem;
+  border-radius: 10px;
+  font-size: 0.8rem;
+}
+
+.movement-chart-custom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.1rem;
+}
+
+.movement-chart-custom-input {
+  width: 5rem;
+  min-width: 0;
+  padding: 0.4rem 0.6rem;
+  border-radius: 10px;
+  font-size: 0.8rem;
+}
+
+.movement-chart-custom-select {
+  padding: 0.4rem 0.7rem;
+  border-radius: 10px;
+  font-size: 0.8rem;
+}
+
+.movement-chart-custom-apply {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.8rem;
+  min-width: 0;
 }
 
 .alert-panel {

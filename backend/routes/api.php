@@ -21,6 +21,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('movimentacoes', [MovimentacaoEstoqueController::class, 'store']);
 
     Route::get('dashboard', [DashboardController::class, 'index']);
+    Route::get('dashboard/movimentacoes-por-periodo', [DashboardController::class, 'movimentacoesPorPeriodo']);
 
     Route::prefix('relatorios')->group(function () {
         Route::get('inventario/csv', [RelatorioController::class, 'inventarioCsv']);
