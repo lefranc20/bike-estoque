@@ -185,6 +185,10 @@ a,
   background: linear-gradient(145deg, rgba(20, 32, 56, 0.98), rgba(12, 22, 40, 0.96));
 }
 
+.product-sections .page-panel.table-card {
+  overflow-x: auto;
+}
+
 .product-sections .page-panel:not(.is-open) {
   grid-row: 1;
 }
@@ -560,6 +564,49 @@ a,
   .product-sections.has-open-card .page-panel.is-open {
     grid-column: auto;
     grid-row: auto;
+  }
+}
+
+@media (max-width: 900px) {
+  .page-view {
+    padding: 40px 24px;
+  }
+
+  .dashboard-page.page-view {
+    padding: 40px 24px 32px;
+  }
+}
+
+@media (max-width: 600px) {
+  .page-view {
+    padding: 28px 16px;
+  }
+
+  .dashboard-page.page-view {
+    padding: 28px 16px 24px;
+  }
+
+  .page-panel {
+    padding: 20px;
+    border-radius: 18px;
+  }
+
+  .product-sections .page-panel {
+    padding: 1.25rem;
+  }
+
+  .panel-heading {
+    min-height: 4.5rem;
+  }
+
+  .page-header {
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .table-card th,
+  .table-card td {
+    padding: 10px 12px;
   }
 }
 

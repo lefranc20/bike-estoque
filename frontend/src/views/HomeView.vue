@@ -65,7 +65,7 @@ onMounted(async () => {
     <DashboardHeader
       eyebrow="Visão geral"
       title="Controle de Estoque"
-      subtitle="Visualize os principais indicadores do estoque em um painel estável, claro e otimizado para desktop."
+      subtitle="Visualize os principais indicadores do estoque em um painel estável e claro, em qualquer dispositivo."
     />
 
     <div class="dashboard-hero">
@@ -266,12 +266,24 @@ onMounted(async () => {
 }
 
 @media (max-width: 900px) {
+  .dashboard-page {
+    padding: 40px 24px 32px;
+  }
+
   .dashboard-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 620px) {
+  .dashboard-page {
+    padding: 28px 16px 24px;
+  }
+
+  .dashboard-hero {
+    padding: 1.5rem 1.5rem;
+  }
+
   .dashboard-grid {
     grid-template-columns: 1fr;
   }

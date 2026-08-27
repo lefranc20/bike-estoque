@@ -1,4 +1,5 @@
 <script setup>
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 
@@ -24,6 +25,22 @@ defineProps({
     required: true
   }
 })
+
+const dispositivo = ref('Desktop')
+const mobileQuery = window.matchMedia('(max-width: 760px)')
+
+function atualizarDispositivo(evento) {
+  dispositivo.value = evento.matches ? 'Mobile' : 'Desktop'
+}
+
+onMounted(() => {
+  atualizarDispositivo(mobileQuery)
+  mobileQuery.addEventListener('change', atualizarDispositivo)
+})
+
+onUnmounted(() => {
+  mobileQuery.removeEventListener('change', atualizarDispositivo)
+})
 </script>
 
 <template>
@@ -32,7 +49,7 @@ defineProps({
       <p class="dashboard-breadcrumb">
         <span>{{ eyebrow }}</span>
         <span class="breadcrumb-separator">•</span>
-        <span>Desktop</span>
+        <span>{{ dispositivo }}</span>
         <template v-if="auth.user">
           <span class="breadcrumb-separator">•</span>
           <span>{{ auth.user.name }}</span>

@@ -176,7 +176,7 @@ onMounted(() => {
     <DashboardHeader
       eyebrow="Produtos"
       title="Produtos"
-      subtitle="Gerencie produtos, categorias e estoque com layout desktop consistente."
+      subtitle="Gerencie produtos, categorias e estoque com um layout consistente em qualquer tela."
     />
 
     <div class="product-sections" :class="{ 'has-open-card': cardAberto }">
