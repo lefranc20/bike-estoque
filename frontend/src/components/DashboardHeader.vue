@@ -2,8 +2,10 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
+import { useTemaStore } from '../stores/tema'
 
 const auth = useAuthStore()
+const tema = useTemaStore()
 const router = useRouter()
 
 async function sair() {
@@ -63,6 +65,15 @@ onUnmounted(() => {
       <RouterLink to="/produtos">Produtos</RouterLink>
       <RouterLink to="/movimentacoes">Movimentações</RouterLink>
       <RouterLink to="/relatorios">Relatórios</RouterLink>
+      <button
+        class="tema-toggle"
+        type="button"
+        :aria-label="tema.tema === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'"
+        :title="tema.tema === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'"
+        @click="tema.alternar()"
+      >
+        {{ tema.tema === 'dark' ? '☀️' : '🌙' }}
+      </button>
       <button class="logout-button" type="button" @click="sair">Sair</button>
     </nav>
   </div>
@@ -89,7 +100,7 @@ onUnmounted(() => {
   font-size: 0.72rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #93c5fd;
+  color: var(--cor-link);
   opacity: 0.9;
 }
 
@@ -101,13 +112,13 @@ onUnmounted(() => {
   margin: 0;
   font-size: clamp(2.3rem, 3vw, 3rem);
   font-weight: 700;
-  color: #f8fafc;
+  color: var(--cor-texto-forte);
   line-height: 1.1;
 }
 
 .dashboard-subtitle {
   margin-top: 0.8rem;
-  color: #cbd5e1;
+  color: var(--cor-texto-medio);
   font-size: 1.05rem;
   line-height: 1.7;
   max-width: 720px;
@@ -131,7 +142,7 @@ onUnmounted(() => {
 .logout-button {
   background: rgba(239, 68, 68, 0.12);
   border: 1px solid rgba(248, 113, 113, 0.4);
-  color: #fca5a5;
+  color: var(--cor-erro-texto);
   font-family: inherit;
   font-size: 0.9375rem;
   line-height: 1.5rem;
@@ -143,7 +154,6 @@ onUnmounted(() => {
 .logout-button:hover {
   background: rgba(239, 68, 68, 0.22);
   border-color: rgba(248, 113, 113, 0.6);
-  color: #fecaca;
 }
 
 .dashboard-actions a {
@@ -153,9 +163,9 @@ onUnmounted(() => {
   min-width: 120px;
   padding: 0.8rem 1.2rem;
   border-radius: 999px;
-  background: rgba(148, 163, 184, 0.08);
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  color: #e2e8f0;
+  background: var(--cor-chip-fundo);
+  border: 1px solid var(--cor-borda-forte);
+  color: var(--cor-texto);
   text-decoration: none;
   font-weight: 600;
   transition: all 0.2s ease;
@@ -169,7 +179,30 @@ onUnmounted(() => {
 .dashboard-actions a.router-link-exact-active {
   background: rgba(37, 99, 235, 0.24);
   border-color: rgba(96, 165, 250, 0.5);
-  color: #dbeafe;
+  color: var(--cor-link);
+}
+
+.tema-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  min-width: 0;
+  padding: 0;
+  border-radius: 999px;
+  background: var(--cor-chip-fundo);
+  border: 1px solid var(--cor-borda-forte);
+  color: var(--cor-texto);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tema-toggle:hover {
+  background: rgba(59, 130, 246, 0.12);
+  border-color: rgba(96, 165, 250, 0.35);
+  transform: translateY(-1px);
 }
 
 @media (max-width: 760px) {

@@ -2,8 +2,10 @@
 import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
+import { useTemaStore } from '../stores/tema'
 
 const auth = useAuthStore()
+const tema = useTemaStore()
 const router = useRouter()
 const route = useRoute()
 
@@ -59,6 +61,15 @@ async function entrar() {
 
 <template>
   <div class="login-page">
+    <button
+      class="login-tema-toggle"
+      type="button"
+      :aria-label="tema.tema === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'"
+      :title="tema.tema === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'"
+      @click="tema.alternar()"
+    >
+      {{ tema.tema === 'dark' ? '☀️' : '🌙' }}
+    </button>
     <div class="login-shell">
       <div class="login-visual" @mousemove="onMouseMove" @mouseleave="onMouseLeave">
         <div class="blob-wrap" :style="parallax(0.6)">
@@ -138,12 +149,39 @@ async function entrar() {
 
 <style scoped>
 .login-page {
+  position: relative;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #08111f;
+  background: var(--cor-fundo);
   padding: 24px;
+}
+
+.login-tema-toggle {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  min-width: 0;
+  padding: 0;
+  border-radius: 999px;
+  background: var(--cor-chip-fundo);
+  border: 1px solid var(--cor-borda-forte);
+  color: var(--cor-texto);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.login-tema-toggle:hover {
+  background: rgba(59, 130, 246, 0.12);
+  border-color: rgba(96, 165, 250, 0.35);
+  transform: translateY(-1px);
 }
 
 .login-shell {
@@ -152,8 +190,8 @@ async function entrar() {
   grid-template-columns: 1fr 1fr;
   border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 22px 48px rgba(15, 23, 42, 0.34);
-  border: 1px solid rgba(148, 163, 184, 0.12);
+  box-shadow: 0 22px 48px var(--sombra-painel);
+  border: 1px solid var(--cor-borda);
 }
 
 .login-visual {
@@ -248,7 +286,7 @@ async function entrar() {
 }
 
 .login-form-panel {
-  background: rgba(15, 23, 42, 0.92);
+  background: var(--cor-painel);
   padding: 2.75rem 2.5rem;
   display: flex;
   flex-direction: column;
@@ -285,7 +323,7 @@ async function entrar() {
 
 .login-info-box p {
   margin: 0 0 0.8rem;
-  color: #cbd5e1;
+  color: var(--cor-texto-medio);
   font-size: 0.85rem;
   line-height: 1.5;
 }
@@ -300,27 +338,27 @@ async function entrar() {
 .login-info-table td {
   text-align: left;
   padding: 0.35rem 0.5rem;
-  color: #e2e8f0;
+  color: var(--cor-texto);
 }
 
 .login-info-table th {
-  color: #94a3b8;
+  color: var(--cor-texto-fraco);
   font-weight: 600;
 }
 
 .login-info-table tr + tr td {
-  border-top: 1px solid rgba(148, 163, 184, 0.14);
+  border-top: 1px solid var(--cor-borda);
 }
 
 .login-title {
   margin: 0 0 0.4rem;
-  color: #f8fafc;
+  color: var(--cor-texto-forte);
   font-size: 1.6rem;
 }
 
 .login-subtitle {
   margin: 0 0 1.5rem;
-  color: #94a3b8;
+  color: var(--cor-texto-fraco);
 }
 
 .login-button {

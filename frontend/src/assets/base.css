@@ -1,53 +1,66 @@
-/* color palette from <https://github.com/vuejs/theme> */
+/* Sistema de tokens de cor do Bike Estoque — escuro é o padrão, claro sobrescreve via [data-theme="light"] */
 :root {
-  --vt-c-white: #ffffff;
-  --vt-c-white-soft: #f8f8f8;
-  --vt-c-white-mute: #f2f2f2;
+  --cor-fundo: #08111f;
+  --cor-fundo-alt: #0f172a;
+  --cor-painel: rgba(15, 23, 42, 0.92);
+  --cor-painel-gradiente: linear-gradient(145deg, rgba(20, 32, 56, 0.98), rgba(12, 22, 40, 0.96));
+  --cor-input: #111827;
+  --cor-tabela-cabecalho: #111827;
+  --cor-chip-fundo: rgba(15, 23, 42, 0.55);
+  --cor-hover-linha: rgba(255, 255, 255, 0.03);
 
-  --vt-c-black: #181818;
-  --vt-c-black-soft: #222222;
-  --vt-c-black-mute: #282828;
+  --cor-borda: rgba(148, 163, 184, 0.14);
+  --cor-borda-forte: rgba(148, 163, 184, 0.24);
 
-  --vt-c-indigo: #2c3e50;
+  --cor-texto: #e2e8f0;
+  --cor-texto-forte: #f8fafc;
+  --cor-texto-medio: #cbd5e1;
+  --cor-texto-fraco: #94a3b8;
 
-  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
-  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
-  --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
-  --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
+  --cor-link: #93c5fd;
+  --cor-link-hover-fundo: rgba(147, 197, 253, 0.18);
+  --cor-acento-azul: #7dd3fc;
+  --cor-acento-verde: #6ee7b7;
 
-  --vt-c-text-light-1: var(--vt-c-indigo);
-  --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
-  --vt-c-text-dark-1: var(--vt-c-white);
-  --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
+  --cor-sucesso-texto: #86efac;
+  --cor-erro-texto: #fca5a5;
+
+  --sombra-painel: rgba(15, 23, 42, 0.34);
+  --sombra-painel-forte: rgba(9, 17, 31, 0.35);
+
+  --esquema-cor: dark;
 }
 
-/* semantic color variables for this project */
-:root {
-  --color-background: #070b17;
-  --color-background-soft: #111827;
-  --color-background-mute: #1f2937;
+:root[data-theme='light'] {
+  --cor-fundo: #eef2f9;
+  --cor-fundo-alt: #ffffff;
+  --cor-painel: rgba(255, 255, 255, 0.95);
+  --cor-painel-gradiente: linear-gradient(145deg, #ffffff, #f1f5fb);
+  --cor-input: #ffffff;
+  --cor-tabela-cabecalho: #f1f5f9;
+  --cor-chip-fundo: rgba(15, 23, 42, 0.06);
+  --cor-hover-linha: rgba(15, 23, 42, 0.035);
 
-  --color-border: #374151;
-  --color-border-hover: #4b5563;
+  --cor-borda: rgba(15, 23, 42, 0.1);
+  --cor-borda-forte: rgba(15, 23, 42, 0.18);
 
-  --color-heading: #f8fafc;
-  --color-text: #e5e7eb;
+  --cor-texto: #1e293b;
+  --cor-texto-forte: #0f172a;
+  --cor-texto-medio: #334155;
+  --cor-texto-fraco: #64748b;
 
-  --section-gap: 160px;
-}
+  --cor-link: #1d4ed8;
+  --cor-link-hover-fundo: rgba(29, 78, 216, 0.1);
+  --cor-acento-azul: #0369a1;
+  --cor-acento-verde: #15803d;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: var(--vt-c-black);
-    --color-background-soft: var(--vt-c-black-soft);
-    --color-background-mute: var(--vt-c-black-mute);
+  --cor-sucesso-texto: #15803d;
+  --cor-erro-texto: #b91c1c;
 
-    --color-border: var(--vt-c-divider-dark-2);
-    --color-border-hover: var(--vt-c-divider-dark-1);
+  --sombra-painel: rgba(15, 23, 42, 0.08);
+  --sombra-painel-forte: rgba(15, 23, 42, 0.12);
 
-    --color-heading: var(--vt-c-text-dark-1);
-    --color-text: var(--vt-c-text-dark-2);
-  }
+  --esquema-cor: light;
 }
 
 *,
@@ -56,15 +69,14 @@
   box-sizing: border-box;
   margin: 0;
   font-weight: normal;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
 }
 
 body {
   min-height: 100vh;
-  color: var(--color-text);
-  background: var(--color-background);
-  transition:
-    color 0.5s,
-    background-color 0.5s;
+  color: var(--cor-texto);
+  background: var(--cor-fundo);
+  transition: color 0.3s ease, background-color 0.3s ease;
   line-height: 1.6;
   font-family:
     Inter,

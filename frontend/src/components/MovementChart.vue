@@ -82,7 +82,7 @@ function formatarData(data) {
   gap: 1.25rem;
   margin-bottom: 1rem;
   font-size: 0.8rem;
-  color: #cbd5e1;
+  color: var(--cor-texto-medio);
 }
 
 .legend-item {
@@ -98,11 +98,11 @@ function formatarData(data) {
 }
 
 .legend-entrada {
-  background: #4ade80;
+  background: var(--cor-sucesso-texto);
 }
 
 .legend-saida {
-  background: #f87171;
+  background: var(--cor-erro-texto);
 }
 
 .movement-chart-bars {
@@ -134,21 +134,21 @@ function formatarData(data) {
   width: 40%;
   min-height: 2px;
   border-radius: 4px 4px 0 0;
-  transition: height 0.3s ease;
+  transition: height 0.3s ease, background-color 0.25s ease;
 }
 
 .movement-chart-bar.entrada {
-  background: #4ade80;
+  background: var(--cor-sucesso-texto);
 }
 
 .movement-chart-bar.saida {
-  background: #f87171;
+  background: var(--cor-erro-texto);
 }
 
 .movement-chart-label {
   margin-top: 0.5rem;
   font-size: 0.6rem;
-  color: #64748b;
+  color: var(--cor-texto-fraco);
   white-space: nowrap;
 }
 

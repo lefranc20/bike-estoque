@@ -52,7 +52,7 @@ defineEmits(['mudar-pagina'])
 }
 
 .pager-info {
-  color: #94a3b8;
+  color: var(--cor-texto-fraco);
   font-size: 0.85rem;
 }
 </style>

@@ -87,13 +87,13 @@ defineEmits(['save', 'delete', 'toggle'])
 .categoria-lista {
   margin-top: 1.5rem;
   padding-top: 1rem;
-  border-top: 1px solid rgba(148, 163, 184, 0.12);
+  border-top: 1px solid var(--cor-borda);
 }
 
 .categoria-lista h3 {
   margin-bottom: 0.75rem;
   font-size: 1rem;
-  color: #e2e8f0;
+  color: var(--cor-texto);
 }
 
 .categoria-lista__items {
@@ -111,20 +111,20 @@ defineEmits(['save', 'delete', 'toggle'])
   align-items: center;
   gap: 0.75rem;
   padding: 0.7rem 0.9rem;
-  border: 1px solid rgba(148, 163, 184, 0.14);
+  border: 1px solid var(--cor-borda);
   border-radius: 12px;
-  background: rgba(15, 23, 42, 0.7);
-  color: #e2e8f0;
+  background: var(--cor-painel);
+  color: var(--cor-texto);
   transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
 .categoria-item:hover {
   border-color: rgba(147, 197, 253, 0.3);
-  background: rgba(15, 23, 42, 0.9);
+  background: var(--cor-fundo-alt);
 }
 
 .categoria-item span {
-  color: #e2e8f0;
+  color: var(--cor-texto);
 }
 
 .categoria-item button {

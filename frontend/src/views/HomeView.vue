@@ -226,7 +226,7 @@ onMounted(async () => {
   max-width: 1500px;
   margin: 0 auto;
   padding: 72px 64px 48px;
-  color: #e2e8f0;
+  color: var(--cor-texto);
   box-sizing: border-box;
 }
 
@@ -309,10 +309,10 @@ onMounted(async () => {
 }
 
 .dashboard-card {
-  background: rgba(15, 23, 42, 0.92);
-  border: 1px solid rgba(148, 163, 184, 0.14);
+  background: var(--cor-painel);
+  border: 1px solid var(--cor-borda);
   border-radius: 22px;
-  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.22);
+  box-shadow: 0 18px 40px var(--sombra-painel);
   padding: 1.8rem 1.9rem;
   display: flex;
   flex-direction: column;
@@ -323,7 +323,7 @@ onMounted(async () => {
   font-size: 0.8rem;
   letter-spacing: 0.13em;
   text-transform: uppercase;
-  color: #cbd5e1;
+  color: var(--cor-texto-medio);
   opacity: 0.9;
 }
 
@@ -331,7 +331,7 @@ onMounted(async () => {
   margin: 0;
   font-size: clamp(2rem, 2.6vw, 2.6rem);
   font-weight: 700;
-  color: #f8fafc;
+  color: var(--cor-texto-forte);
   line-height: 1;
 }
 
@@ -340,10 +340,10 @@ onMounted(async () => {
   margin-top: 1.2rem;
   min-width: 140px;
   padding: 0.7rem 1rem;
-  border: 1px solid rgba(148, 163, 184, 0.2);
+  border: 1px solid var(--cor-borda-forte);
   border-radius: 12px;
-  background: rgba(15, 23, 42, 0.35);
-  color: #e2e8f0;
+  background: var(--cor-chip-fundo);
+  color: var(--cor-texto);
   font-weight: 600;
   cursor: pointer;
 }
@@ -376,15 +376,15 @@ onMounted(async () => {
   width: 100%;
   padding: 1.2rem 1.25rem;
   border-radius: 18px;
-  border: 1px solid rgba(148, 163, 184, 0.14);
-  background: rgba(15, 23, 42, 0.82);
-  color: #cbd5e1;
+  border: 1px solid var(--cor-borda);
+  background: var(--cor-painel);
+  color: var(--cor-texto-medio);
   margin-top: 0.8rem;
 }
 
 .status-summary {
   margin: 0;
-  color: #cbd5e1;
+  color: var(--cor-texto-medio);
   line-height: 1.6;
 }
 
@@ -403,7 +403,7 @@ onMounted(async () => {
 
 .movement-chart-title {
   margin: 0;
-  color: #f8fafc;
+  color: var(--cor-texto-forte);
   font-size: 1rem;
   font-weight: 700;
 }
@@ -452,7 +452,7 @@ onMounted(async () => {
   align-items: center;
   gap: 0.6rem;
   margin: 0 0 1rem;
-  color: #fecaca;
+  color: var(--cor-erro-texto);
   font-size: 1rem;
   font-weight: 700;
 }
@@ -481,11 +481,11 @@ onMounted(async () => {
 }
 
 .status-error {
-  color: #f87171;
+  color: var(--cor-erro-texto);
 }
 
 .status-success {
-  color: #4ade80;
+  color: var(--cor-sucesso-texto);
 }
 
 .status-success-container {
