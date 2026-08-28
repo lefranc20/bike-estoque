@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import api from '../services/api'
 import DashboardHeader from '../components/DashboardHeader.vue'
+import Pager from '../components/Pager.vue'
 
 const movimentacoes = ref([])
 const produtos = ref([])
@@ -9,6 +10,9 @@ const carregando = ref(true)
 const erro = ref(null)
 const sucesso = ref(null)
 const errors = ref({})
+const paginaAtual = ref(1)
+const totalPaginas = ref(1)
+const totalMovimentacoes = ref(0)
 
 const form = ref({
   produto_id: '',
@@ -22,17 +26,24 @@ async function carregarDados() {
     carregando.value = true
     erro.value = null
     const [resMovimentacoes, resProdutos] = await Promise.all([
-      api.get('/movimentacoes'),
-      api.get('/produtos')
+      api.get('/movimentacoes', { params: { page: paginaAtual.value } }),
+      api.get('/produtos', { params: { per_page: 200 } })
     ])
-    movimentacoes.value = resMovimentacoes.data
-    produtos.value = resProdutos.data
+    movimentacoes.value = resMovimentacoes.data.data
+    totalPaginas.value = resMovimentacoes.data.last_page
+    totalMovimentacoes.value = resMovimentacoes.data.total
+    produtos.value = resProdutos.data.data
   } catch (e) {
     erro.value = 'Erro ao carregar movimentações'
     console.error(e)
   } finally {
     carregando.value = false
   }
+}
+
+function mudarPagina(pagina) {
+  paginaAtual.value = pagina
+  carregarDados()
 }
 
 async function salvarMovimentacao() {
@@ -166,6 +177,14 @@ onMounted(() => {
           </tr>
         </tbody>
       </table>
+
+      <Pager
+        v-if="!carregando && !erro"
+        :pagina-atual="paginaAtual"
+        :total-paginas="totalPaginas"
+        :total="totalMovimentacoes"
+        @mudar-pagina="mudarPagina"
+      />
 
       <p v-if="!carregando && movimentacoes.length === 0" class="status-summary">Nenhuma movimentação registrada ainda.</p>
     </div>

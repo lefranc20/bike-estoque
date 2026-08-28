@@ -1,4 +1,6 @@
 <script setup>
+import Pager from './Pager.vue'
+
 defineProps({
   aberto: {
     type: Boolean,
@@ -23,10 +25,22 @@ defineProps({
   isAdmin: {
     type: Boolean,
     default: false
+  },
+  paginaAtual: {
+    type: Number,
+    default: 1
+  },
+  totalPaginas: {
+    type: Number,
+    default: 1
+  },
+  total: {
+    type: Number,
+    default: 0
   }
 })
 
-defineEmits(['delete', 'toggle'])
+defineEmits(['delete', 'toggle', 'mudar-pagina'])
 </script>
 
 <template>
@@ -82,6 +96,14 @@ defineEmits(['delete', 'toggle'])
       <p v-if="!carregando && !erro && produtos.length === 0" class="status-summary">
         Nenhum produto cadastrado ainda.
       </p>
+
+      <Pager
+        v-if="!carregando && !erro"
+        :pagina-atual="paginaAtual"
+        :total-paginas="totalPaginas"
+        :total="total"
+        @mudar-pagina="$emit('mudar-pagina', $event)"
+      />
       </div>
     </Transition>
   </section>

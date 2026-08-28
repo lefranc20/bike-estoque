@@ -15,6 +15,9 @@ const carregando = ref(true)
 const erro = ref(null)
 const errors = ref({})
 const produtoSucesso = ref(null)
+const paginaAtual = ref(1)
+const totalPaginasProdutos = ref(1)
+const totalProdutosCount = ref(0)
 
 const form = ref({
   id: null,
@@ -43,17 +46,30 @@ async function carregarDados() {
     erro.value = null
     errors.value = {}
     const [resProdutos, resCategorias] = await Promise.all([
-      api.get('/produtos'),
+      api.get('/produtos', { params: { page: paginaAtual.value } }),
       api.get('/categorias')
     ])
-    produtos.value = resProdutos.data
     categorias.value = resCategorias.data
+
+    if (resProdutos.data.data.length === 0 && paginaAtual.value > 1) {
+      paginaAtual.value -= 1
+      return await carregarDados()
+    }
+
+    produtos.value = resProdutos.data.data
+    totalPaginasProdutos.value = resProdutos.data.last_page
+    totalProdutosCount.value = resProdutos.data.total
   } catch (e) {
     erro.value = 'Erro ao carregar dados'
     console.error(e)
   } finally {
     carregando.value = false
   }
+}
+
+function mudarPaginaProdutos(pagina) {
+  paginaAtual.value = pagina
+  carregarDados()
 }
 
 function limparFormulario() {
@@ -209,8 +225,12 @@ onMounted(() => {
         :sucesso="produtoSucesso"
         :is-admin="auth.isAdmin"
         :aberto="cardAberto === 'produtos'"
+        :pagina-atual="paginaAtual"
+        :total-paginas="totalPaginasProdutos"
+        :total="totalProdutosCount"
         @delete="excluir"
         @toggle="alternarCard('produtos')"
+        @mudar-pagina="mudarPaginaProdutos"
       />
     </div>
   </div>

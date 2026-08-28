@@ -17,9 +17,16 @@ class ProdutoController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return Produto::with('categoria')->get();
+        // 20 é o padrão quando ninguém pede um valor; 200 é o teto máximo que a API aceita
+        // entregar numa única resposta, não importa quem peça (protege contra ?per_page=99999).
+        // Sem esse teto, ?per_page=99999 forçaria o frontend a renderizar dezenas de milhares
+        // de linhas de tabela (milhares de elementos DOM) de uma vez, travando a página —
+        // principalmente em celular, onde o navegador pode até matar a aba por falta de memória.
+        $porPagina = max(1, min((int) $request->query('per_page', 20), 200));
+
+        return Produto::with('categoria')->orderBy('nome')->paginate($porPagina);
     }
 
     public function store(Request $request)
