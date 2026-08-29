@@ -3,6 +3,7 @@
 Sistema de controle de estoque para uma revendedora de peças de bicicleta: cadastro de produtos e categorias, controle de quantidade e registro de entradas, saídas e ajustes de estoque, com dashboard de indicadores, gráfico de movimentações por período, exportação de relatórios em CSV/PDF e controle de acesso por papéis (admin/padrão).
 
 **🔗 Demo online:** [bike-estoque.vercel.app](https://bike-estoque.vercel.app/)
+![GIF de demonstração](https://github.com/user-attachments/assets/1476a541-ea5e-476a-b230-cc60840fe683)
 
 ---
 
