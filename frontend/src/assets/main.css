@@ -581,3 +581,25 @@ a,
     padding: 10px 12px;
   }
 }
+
+.route-fade-enter-active,
+.route-fade-leave-active {
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+.route-fade-enter-from,
+.route-fade-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
