@@ -183,30 +183,32 @@ onMounted(async () => {
       <MovementChart :dados="movimentacoesPorPeriodo" :granularidade="granularidadeAtual" />
     </div>
 
-    <div v-if="mostrarProdutosAbaixoDoMinimo" class="dashboard-status alert-panel">
-      <h3 class="alert-panel-title">
-        <span class="alert-icon">!</span> Produtos abaixo do mínimo
-      </h3>
-      <div v-if="produtosAbaixoDoMinimo.length" class="table-card">
-        <table>
-          <thead>
-            <tr>
-              <th>Produto</th>
-              <th class="numeric">Estoque</th>
-              <th class="numeric">Mínimo</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="produto in produtosAbaixoDoMinimo" :key="produto.id">
-              <td>{{ produto.nome }}</td>
-              <td class="numeric">{{ produto.quantidade }}</td>
-              <td class="numeric">{{ produto.estoque_minimo }}</td>
-            </tr>
-          </tbody>
-        </table>
+    <Transition name="panel-expand">
+      <div v-if="mostrarProdutosAbaixoDoMinimo" class="dashboard-status alert-panel">
+        <h3 class="alert-panel-title">
+          <span class="alert-icon">!</span> Produtos abaixo do mínimo
+        </h3>
+        <div v-if="produtosAbaixoDoMinimo.length" class="table-card">
+          <table>
+            <thead>
+              <tr>
+                <th>Produto</th>
+                <th class="numeric">Estoque</th>
+                <th class="numeric">Mínimo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="produto in produtosAbaixoDoMinimo" :key="produto.id">
+                <td>{{ produto.nome }}</td>
+                <td class="numeric">{{ produto.quantidade }}</td>
+                <td class="numeric">{{ produto.estoque_minimo }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p v-else class="status-summary">Nenhum produto está abaixo do mínimo.</p>
       </div>
-      <p v-else class="status-summary">Nenhum produto está abaixo do mínimo.</p>
-    </div>
+    </Transition>
 
     <div
       v-if="carregando || erro || sucessoVisivel"
@@ -316,6 +318,7 @@ onMounted(async () => {
   padding: 1.8rem 1.9rem;
   display: flex;
   flex-direction: column;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .dashboard-card .card-label {
@@ -333,6 +336,12 @@ onMounted(async () => {
   font-weight: 700;
   color: var(--cor-texto-forte);
   line-height: 1;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(147, 197, 253, 0.35);
+  box-shadow: 0 24px 60px var(--sombra-painel-forte);
 }
 
 .dashboard-card .button-secondary {
