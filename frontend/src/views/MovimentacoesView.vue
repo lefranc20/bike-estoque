@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import api from '../services/api'
 import DashboardHeader from '../components/DashboardHeader.vue'
 import Pager from '../components/Pager.vue'
+import SortableHeader from '../components/SortableHeader.vue'
 
 const movimentacoes = ref([])
 const produtos = ref([])
@@ -13,6 +14,7 @@ const errors = ref({})
 const paginaAtual = ref(1)
 const totalPaginas = ref(1)
 const totalMovimentacoes = ref(0)
+const ordenacao = ref({ coluna: 'created_at', direcao: 'desc' })
 
 const form = ref({
   produto_id: '',
@@ -26,7 +28,13 @@ async function carregarDados() {
     carregando.value = true
     erro.value = null
     const [resMovimentacoes, resProdutos] = await Promise.all([
-      api.get('/movimentacoes', { params: { page: paginaAtual.value } }),
+      api.get('/movimentacoes', {
+        params: {
+          page: paginaAtual.value,
+          sort: ordenacao.value.coluna,
+          direction: ordenacao.value.direcao
+        }
+      }),
       api.get('/produtos', { params: { per_page: 200 } })
     ])
     movimentacoes.value = resMovimentacoes.data.data
@@ -43,6 +51,17 @@ async function carregarDados() {
 
 function mudarPagina(pagina) {
   paginaAtual.value = pagina
+  carregarDados()
+}
+
+function ordenar(coluna) {
+  if (ordenacao.value.coluna === coluna) {
+    ordenacao.value.direcao = ordenacao.value.direcao === 'asc' ? 'desc' : 'asc'
+  } else {
+    ordenacao.value.coluna = coluna
+    ordenacao.value.direcao = coluna === 'created_at' ? 'desc' : 'asc'
+  }
+  paginaAtual.value = 1
   carregarDados()
 }
 
@@ -152,12 +171,54 @@ onMounted(() => {
       <table v-else>
         <thead>
           <tr>
-            <th>Data</th>
-            <th>Produto</th>
-            <th>Tipo</th>
-            <th>Quantidade</th>
-            <th>Anterior</th>
-            <th>Nova</th>
+            <SortableHeader
+              coluna="created_at"
+              :ordenacao-atual="ordenacao.coluna"
+              :direcao-atual="ordenacao.direcao"
+              @ordenar="ordenar"
+            >
+              Data
+            </SortableHeader>
+            <SortableHeader
+              coluna="produto"
+              :ordenacao-atual="ordenacao.coluna"
+              :direcao-atual="ordenacao.direcao"
+              @ordenar="ordenar"
+            >
+              Produto
+            </SortableHeader>
+            <SortableHeader
+              coluna="tipo"
+              :ordenacao-atual="ordenacao.coluna"
+              :direcao-atual="ordenacao.direcao"
+              @ordenar="ordenar"
+            >
+              Tipo
+            </SortableHeader>
+            <SortableHeader
+              coluna="quantidade"
+              :ordenacao-atual="ordenacao.coluna"
+              :direcao-atual="ordenacao.direcao"
+              @ordenar="ordenar"
+            >
+              Quantidade
+            </SortableHeader>
+            <SortableHeader
+              coluna="quantidade_anterior"
+              :ordenacao-atual="ordenacao.coluna"
+              :direcao-atual="ordenacao.direcao"
+              @ordenar="ordenar"
+            >
+              Anterior
+            </SortableHeader>
+            <SortableHeader
+              coluna="quantidade_nova"
+              :ordenacao-atual="ordenacao.coluna"
+              :direcao-atual="ordenacao.direcao"
+              @ordenar="ordenar"
+            >
+              Nova
+            </SortableHeader>
             <th>Motivo</th>
           </tr>
         </thead>

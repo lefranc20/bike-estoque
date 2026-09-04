@@ -18,6 +18,7 @@ const produtoSucesso = ref(null)
 const paginaAtual = ref(1)
 const totalPaginasProdutos = ref(1)
 const totalProdutosCount = ref(0)
+const ordenacao = ref({ coluna: 'nome', direcao: 'asc' })
 
 const form = ref({
   id: null,
@@ -46,7 +47,13 @@ async function carregarDados() {
     erro.value = null
     errors.value = {}
     const [resProdutos, resCategorias] = await Promise.all([
-      api.get('/produtos', { params: { page: paginaAtual.value } }),
+      api.get('/produtos', {
+        params: {
+          page: paginaAtual.value,
+          sort: ordenacao.value.coluna,
+          direction: ordenacao.value.direcao
+        }
+      }),
       api.get('/categorias')
     ])
     categorias.value = resCategorias.data
@@ -69,6 +76,17 @@ async function carregarDados() {
 
 function mudarPaginaProdutos(pagina) {
   paginaAtual.value = pagina
+  carregarDados()
+}
+
+function ordenarProdutos(coluna) {
+  if (ordenacao.value.coluna === coluna) {
+    ordenacao.value.direcao = ordenacao.value.direcao === 'asc' ? 'desc' : 'asc'
+  } else {
+    ordenacao.value.coluna = coluna
+    ordenacao.value.direcao = 'asc'
+  }
+  paginaAtual.value = 1
   carregarDados()
 }
 
@@ -228,9 +246,11 @@ onMounted(() => {
         :pagina-atual="paginaAtual"
         :total-paginas="totalPaginasProdutos"
         :total="totalProdutosCount"
+        :ordenacao="ordenacao"
         @delete="excluir"
         @toggle="alternarCard('produtos')"
         @mudar-pagina="mudarPaginaProdutos"
+        @ordenar="ordenarProdutos"
       />
     </div>
   </div>

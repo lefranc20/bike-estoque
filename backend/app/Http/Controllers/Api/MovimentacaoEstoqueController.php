@@ -18,7 +18,27 @@ class MovimentacaoEstoqueController extends Controller
         // principalmente em celular, onde o navegador pode até matar a aba por falta de memória.
         $porPagina = max(1, min((int) $request->query('per_page', 20), 200));
 
-        return MovimentacaoEstoque::with(['produto', 'usuario'])->latest()->paginate($porPagina);
+        $ordenacao = $request->validate([
+            'sort' => 'nullable|in:created_at,tipo,quantidade,quantidade_anterior,quantidade_nova,produto',
+            'direction' => 'nullable|in:asc,desc',
+        ]);
+
+        $coluna = $ordenacao['sort'] ?? 'created_at';
+        $direcao = $ordenacao['direction'] ?? 'desc';
+
+        $query = MovimentacaoEstoque::with(['produto', 'usuario']);
+
+        if ($coluna === 'produto') {
+            // Ordenar pelo nome do produto exige um join, já que "produto" não é
+            // uma coluna da própria tabela de movimentações.
+            $query->leftJoin('produtos', 'produtos.id', '=', 'movimentacoes_estoque.produto_id')
+                ->select('movimentacoes_estoque.*')
+                ->orderBy('produtos.nome', $direcao);
+        } else {
+            $query->orderBy($coluna, $direcao);
+        }
+
+        return $query->paginate($porPagina);
     }
 
     public function store(Request $request)
