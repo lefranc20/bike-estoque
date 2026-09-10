@@ -72,13 +72,8 @@
 }
 
 .dashboard-page {
-  width: min(100%, 1500px);
-  margin: 0 auto;
-  padding: 58px 80px;
-  min-height: 100vh;
-  background: var(--cor-fundo);
-  color: var(--cor-texto);
-  box-sizing: border-box;
+  @apply w-[min(100%,1500px)] mx-auto pt-[58px] pb-[58px] px-[80px] min-h-screen
+    bg-[var(--cor-fundo)] text-[color:var(--cor-texto)] box-border;
 }
 
 .status-message,
@@ -95,26 +90,17 @@
 }
 
 .page-view {
-  padding: 72px 96px;
-  min-height: 100vh;
-  color: var(--cor-texto);
-  background: var(--cor-fundo);
+  @apply py-[72px] px-[96px] min-h-screen text-[color:var(--cor-texto)] bg-[var(--cor-fundo)];
 }
 
 .dashboard-page.page-view {
-  width: min(100%, 1500px);
-  max-width: 1500px;
-  margin: 0 auto;
-  padding: 72px 64px 48px;
-  box-sizing: border-box;
+  @apply w-[min(100%,1500px)] max-w-[1500px] mx-auto pt-[72px] px-[64px] pb-[48px] box-border;
 }
 
 .page-view .page-header,
 .page-view .page-panel,
 .page-view .table-card {
-  max-width: 1320px;
-  margin-left: auto;
-  margin-right: auto;
+  @apply max-w-[1320px] mx-auto;
 }
 
 .page-header {
@@ -536,21 +522,21 @@
 
 @media (max-width: 900px) {
   .page-view {
-    padding: 40px 24px;
+    @apply py-[40px] px-[24px];
   }
 
   .dashboard-page.page-view {
-    padding: 40px 24px 32px;
+    @apply pt-[40px] px-[24px] pb-[32px];
   }
 }
 
 @media (max-width: 600px) {
   .page-view {
-    padding: 28px 16px;
+    @apply py-[28px] px-[16px];
   }
 
   .dashboard-page.page-view {
-    padding: 28px 16px 24px;
+    @apply pt-[28px] px-[16px] pb-[24px];
   }
 
   .page-panel {
