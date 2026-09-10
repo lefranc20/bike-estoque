@@ -78,15 +78,11 @@
 
 .status-message,
 .status-summary {
-  color: var(--cor-texto-medio);
-  font-size: 1rem;
-  margin: 0;
+  @apply text-[color:var(--cor-texto-medio)] text-[1rem] m-0;
 }
 
 .status-error {
-  color: var(--cor-erro-texto);
-  font-size: 1rem;
-  margin: 0;
+  @apply text-[color:var(--cor-erro-texto)] text-[1rem] m-0;
 }
 
 .page-view {
@@ -123,20 +119,19 @@
 }
 
 .page-panel {
-  background: var(--cor-painel);
-  padding: 32px;
-  border-radius: 24px;
-  border: 1px solid var(--cor-borda);
-  box-shadow: 0 22px 48px var(--sombra-painel);
-  margin-bottom: 2rem;
+  @apply bg-[var(--cor-painel)] p-[32px] rounded-[24px] border border-[color:var(--cor-borda)]
+    shadow-[0_22px_48px_var(--sombra-painel)] mb-8;
+  /* mantido como propriedade normal: o timing "ease" (não "ease-in-out") não tem
+     utilitária nomeada equivalente no Tailwind, então @apply mudaria a curva da transição. */
   transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease,
     background-color 0.25s ease, color 0.25s ease;
 }
 
 .page-panel:hover {
+  @apply border-[rgba(147,197,253,0.35)] shadow-[0_24px_60px_var(--sombra-painel-forte)];
+  /* mantido como propriedade normal: a utilitária translate-y do Tailwind anima via
+     "translate", não "transform" — a transição declarada acima só escuta "transform". */
   transform: translateY(-4px);
-  border-color: rgba(147, 197, 253, 0.35);
-  box-shadow: 0 24px 60px var(--sombra-painel-forte);
 }
 
 .fade-enter-active,
@@ -146,12 +141,11 @@
 
 .fade-enter-from,
 .fade-leave-to {
-  opacity: 0;
+  @apply opacity-0;
 }
 
 .page-panel--grid {
-  display: grid;
-  gap: 1.5rem;
+  @apply grid gap-6;
 }
 
 .product-sections {
@@ -338,22 +332,16 @@
 }
 
 .form-field label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: var(--cor-texto-medio);
-  font-weight: 600;
+  @apply block mb-2 text-[color:var(--cor-texto-medio)] font-semibold;
 }
 
 .form-field input,
 .form-field select,
 .form-field textarea {
-  box-sizing: border-box;
-  width: 100%;
-  padding: 12px 14px;
-  border-radius: 14px;
-  border: 1px solid var(--cor-borda);
-  background: var(--cor-input);
-  color: var(--cor-texto);
+  @apply box-border w-full py-[12px] px-[14px] rounded-[14px] border border-[color:var(--cor-borda)]
+    bg-[var(--cor-input)] text-[color:var(--cor-texto)];
+  /* mantido como propriedade normal: o timing "ease" não tem utilitária nomeada
+     equivalente no Tailwind (só ease-in-out, ease-in, ease-out, ease-linear). */
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease,
     color 0.2s ease;
 }
@@ -361,15 +349,11 @@
 .form-field input:focus,
 .form-field select:focus,
 .form-field textarea:focus {
-  outline: none;
-  border-color: #60a5fa;
-  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.14);
+  @apply outline-none border-[#60a5fa] shadow-[0_0_0_3px_rgba(96,165,250,0.14)];
 }
 
 .form-field textarea {
-  max-width: 100%;
-  min-height: 100px;
-  resize: vertical;
+  @apply max-w-full min-h-[100px] resize-y;
 }
 
 .form-actions {
@@ -521,8 +505,7 @@
   }
 
   .page-panel {
-    padding: 20px;
-    border-radius: 18px;
+    @apply p-[20px] rounded-[18px];
   }
 
   .product-sections .page-panel {
@@ -551,7 +534,9 @@
 
 .route-fade-enter-from,
 .route-fade-leave-to {
-  opacity: 0;
+  @apply opacity-0;
+  /* mantido como propriedade normal (não translate-y-*): a utilitária de translate
+     do Tailwind anima via "translate", mas a transição acima escuta "transform". */
   transform: translateY(10px);
 }
 
