@@ -429,15 +429,15 @@
 }
 
 .status-inline {
-  margin-bottom: 1rem;
+  @apply mb-4;
 }
 
 .status-inline.error {
-  color: var(--cor-erro-texto);
+  @apply text-[color:var(--cor-erro-texto)];
 }
 
 .status-inline.success {
-  color: var(--cor-sucesso-texto);
+  @apply text-[color:var(--cor-sucesso-texto)];
 }
 
 .table-card {
