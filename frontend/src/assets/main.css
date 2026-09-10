@@ -1,68 +1,73 @@
 @import 'tailwindcss';
 @import './base.css';
 
-#app {
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  padding: 0;
-  font-weight: normal;
-}
+/* Em @layer base pelo mesmo motivo do reset no base.css: essas regras miram elementos
+   genéricos (button, a, input...) e, sem camada, sempre venceriam qualquer utilitária
+   do Tailwind aplicada a esses mesmos elementos (ex.: bg-blue-500 num <button>). */
+@layer base {
+  #app {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+  }
 
-body {
-  background: var(--cor-fundo);
-  color: var(--cor-texto);
-  margin: 0;
-}
+  body {
+    background: var(--cor-fundo);
+    color: var(--cor-texto);
+    margin: 0;
+  }
 
-#app {
-  width: 100%;
-  min-height: 100vh;
-}
+  #app {
+    width: 100%;
+    min-height: 100vh;
+  }
 
-input,
-textarea,
-select {
-  background: var(--cor-input);
-  color: var(--cor-texto);
-  border: 1px solid var(--cor-borda-forte);
-  border-radius: 12px;
-  color-scheme: var(--esquema-cor);
-}
+  input,
+  textarea,
+  select {
+    background: var(--cor-input);
+    color: var(--cor-texto);
+    border: 1px solid var(--cor-borda-forte);
+    border-radius: 12px;
+    color-scheme: var(--esquema-cor);
+  }
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus {
-  -webkit-text-fill-color: var(--cor-texto);
-  -webkit-box-shadow: 0 0 0 1000px var(--cor-input) inset;
-  transition: background-color 9999s ease-in-out 0s;
-}
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--cor-texto);
+    -webkit-box-shadow: 0 0 0 1000px var(--cor-input) inset;
+    transition: background-color 9999s ease-in-out 0s;
+  }
 
-button {
-  color: #ffffff;
-  background: #2563eb;
-  border-radius: 10px;
-  padding: 0.7rem 1.2rem;
-  border: none;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
+  button {
+    color: #ffffff;
+    background: #2563eb;
+    border-radius: 10px;
+    padding: 0.7rem 1.2rem;
+    border: none;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
 
-button:hover {
-  background: #1d4ed8;
-  transform: translateY(-1px);
-}
+  button:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+  }
 
-a,
-.green {
-  text-decoration: none;
-  color: var(--cor-link);
-  transition: 0.4s;
-  padding: 3px;
-}
+  a,
+  .green {
+    text-decoration: none;
+    color: var(--cor-link);
+    transition: 0.4s;
+    padding: 3px;
+  }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: var(--cor-link-hover-fundo);
+  @media (hover: hover) {
+    a:hover {
+      background-color: var(--cor-link-hover-fundo);
+    }
   }
 }
 
@@ -113,12 +118,7 @@ a,
 }
 
 .page-header {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 2.5rem;
-  margin-bottom: 3.5rem;
+  @apply flex flex-wrap justify-between items-start gap-10 mb-14;
 }
 
 .page-title {
@@ -344,13 +344,11 @@ a,
 }
 
 .form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
+  @apply grid grid-cols-2 gap-4;
 }
 
 .form-grid-full {
-  grid-column: 1 / -1;
+  @apply col-span-full;
 }
 
 .form-field label {
@@ -389,15 +387,11 @@ a,
 }
 
 .form-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 1.25rem;
-  align-items: center;
+  @apply flex flex-wrap gap-4 mt-5 items-center;
 }
 
 .form-actions button {
-  min-width: 150px;
+  @apply min-w-[150px];
 }
 
 .button-primary {
