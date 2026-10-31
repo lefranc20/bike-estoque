@@ -18,7 +18,7 @@ defineEmits(['mudar-pagina'])
 </script>
 
 <template>
-  <div v-if="totalPaginas > 1" class="pager">
+  <div v-if="totalPaginas > 1" class="flex flex-wrap items-center justify-center gap-4 mt-5">
     <button
       class="button-secondary"
       type="button"
@@ -27,7 +27,7 @@ defineEmits(['mudar-pagina'])
     >
       ‹ Anterior
     </button>
-    <span class="pager-info">
+    <span class="text-[0.85rem] text-[color:var(--cor-texto-fraco)]">
       Página {{ paginaAtual }} de {{ totalPaginas }} · {{ total }} {{ total === 1 ? 'item' : 'itens' }}
     </span>
     <button
@@ -40,19 +40,3 @@ defineEmits(['mudar-pagina'])
     </button>
   </div>
 </template>
-
-<style scoped>
-.pager {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 1.25rem;
-}
-
-.pager-info {
-  color: var(--cor-texto-fraco);
-  font-size: 0.85rem;
-}
-</style>

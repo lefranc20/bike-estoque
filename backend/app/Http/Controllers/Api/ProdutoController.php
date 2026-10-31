@@ -26,7 +26,27 @@ class ProdutoController extends Controller implements HasMiddleware
         // principalmente em celular, onde o navegador pode até matar a aba por falta de memória.
         $porPagina = max(1, min((int) $request->query('per_page', 20), 200));
 
-        return Produto::with('categoria')->orderBy('nome')->paginate($porPagina);
+        $ordenacao = $request->validate([
+            'sort' => 'nullable|in:nome,codigo,preco,quantidade,categoria',
+            'direction' => 'nullable|in:asc,desc',
+        ]);
+
+        $coluna = $ordenacao['sort'] ?? 'nome';
+        $direcao = $ordenacao['direction'] ?? 'asc';
+
+        $query = Produto::with('categoria');
+
+        if ($coluna === 'categoria') {
+            // Ordenar pelo nome da categoria exige um join, já que "categoria" não é
+            // uma coluna da própria tabela de produtos.
+            $query->leftJoin('categorias', 'categorias.id', '=', 'produtos.categoria_id')
+                ->select('produtos.*')
+                ->orderBy('categorias.nome', $direcao);
+        } else {
+            $query->orderBy($coluna, $direcao);
+        }
+
+        return $query->paginate($porPagina);
     }
 
     public function store(Request $request)

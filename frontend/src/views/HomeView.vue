@@ -112,7 +112,14 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="dashboard-page" @mousemove="onMouseMove" @mouseleave="onMouseLeave">
+  <div
+    class="w-[min(100%,1500px)] max-w-[1500px] mx-auto pt-[72px] px-[64px] pb-[48px]
+      text-[color:var(--cor-texto)] box-border
+      max-[900px]:pt-[40px] max-[900px]:px-[24px] max-[900px]:pb-[32px]
+      max-[620px]:pt-[28px] max-[620px]:px-[16px] max-[620px]:pb-[24px]"
+    @mousemove="onMouseMove"
+    @mouseleave="onMouseLeave"
+  >
     <DashboardHeader
       eyebrow="Visão geral"
       title="Controle de Estoque"
@@ -223,15 +230,6 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-.dashboard-page {
-  width: min(100%, 1500px);
-  max-width: 1500px;
-  margin: 0 auto;
-  padding: 72px 64px 48px;
-  color: var(--cor-texto);
-  box-sizing: border-box;
-}
-
 .dashboard-hero {
   position: relative;
   overflow: hidden;
@@ -358,20 +356,12 @@ onMounted(async () => {
 }
 
 @media (max-width: 900px) {
-  .dashboard-page {
-    padding: 40px 24px 32px;
-  }
-
   .dashboard-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 620px) {
-  .dashboard-page {
-    padding: 28px 16px 24px;
-  }
-
   .dashboard-hero {
     padding: 1.5rem 1.5rem;
   }

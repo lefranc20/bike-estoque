@@ -70,7 +70,11 @@ async function entrar() {
     >
       {{ tema.tema === 'dark' ? '☀️' : '🌙' }}
     </button>
-    <div class="login-shell">
+    <div
+      class="w-[min(100%,920px)] grid grid-cols-2 rounded-3xl overflow-hidden
+        shadow-[0_22px_48px_var(--sombra-painel)] border border-[color:var(--cor-borda)]
+        max-[860px]:grid-cols-1"
+    >
       <div class="login-visual" @mousemove="onMouseMove" @mouseleave="onMouseLeave">
         <div class="blob-wrap" :style="parallax(0.6)">
           <div class="blob blob-a"></div>
@@ -91,7 +95,10 @@ async function entrar() {
         </div>
       </div>
 
-      <form class="login-form-panel" @submit.prevent="entrar">
+      <form
+        class="bg-[var(--cor-painel)] px-10 py-11 flex flex-col justify-center"
+        @submit.prevent="entrar"
+      >
         <button
           class="login-badge"
           type="button"
@@ -182,16 +189,6 @@ async function entrar() {
   background: rgba(59, 130, 246, 0.12);
   border-color: rgba(96, 165, 250, 0.35);
   transform: translateY(-1px);
-}
-
-.login-shell {
-  width: min(100%, 920px);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border-radius: 24px;
-  overflow: hidden;
-  box-shadow: 0 22px 48px var(--sombra-painel);
-  border: 1px solid var(--cor-borda);
 }
 
 .login-visual {
@@ -285,14 +282,6 @@ async function entrar() {
   line-height: 1.6;
 }
 
-.login-form-panel {
-  background: var(--cor-painel);
-  padding: 2.75rem 2.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
 .login-badge {
   align-self: flex-start;
   display: inline-flex;
@@ -367,10 +356,6 @@ async function entrar() {
 }
 
 @media (max-width: 860px) {
-  .login-shell {
-    grid-template-columns: 1fr;
-  }
-
   .login-visual {
     min-height: 220px;
   }

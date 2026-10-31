@@ -1,5 +1,6 @@
 <script setup>
 import Pager from './Pager.vue'
+import SortableHeader from './SortableHeader.vue'
 
 defineProps({
   aberto: {
@@ -37,10 +38,14 @@ defineProps({
   total: {
     type: Number,
     default: 0
+  },
+  ordenacao: {
+    type: Object,
+    default: () => ({ coluna: 'nome', direcao: 'asc' })
   }
 })
 
-defineEmits(['delete', 'toggle', 'mudar-pagina'])
+defineEmits(['delete', 'toggle', 'mudar-pagina', 'ordenar'])
 </script>
 
 <template>
@@ -65,11 +70,49 @@ defineEmits(['delete', 'toggle', 'mudar-pagina'])
       <table v-else>
       <thead>
         <tr>
-          <th>Nome</th>
-          <th class="numeric">Código</th>
-          <th class="numeric">Preço</th>
-          <th class="numeric">Qtd</th>
-          <th>Categoria</th>
+          <SortableHeader
+            coluna="nome"
+            :ordenacao-atual="ordenacao.coluna"
+            :direcao-atual="ordenacao.direcao"
+            @ordenar="$emit('ordenar', $event)"
+          >
+            Nome
+          </SortableHeader>
+          <SortableHeader
+            coluna="codigo"
+            numeric
+            :ordenacao-atual="ordenacao.coluna"
+            :direcao-atual="ordenacao.direcao"
+            @ordenar="$emit('ordenar', $event)"
+          >
+            Código
+          </SortableHeader>
+          <SortableHeader
+            coluna="preco"
+            numeric
+            :ordenacao-atual="ordenacao.coluna"
+            :direcao-atual="ordenacao.direcao"
+            @ordenar="$emit('ordenar', $event)"
+          >
+            Preço
+          </SortableHeader>
+          <SortableHeader
+            coluna="quantidade"
+            numeric
+            :ordenacao-atual="ordenacao.coluna"
+            :direcao-atual="ordenacao.direcao"
+            @ordenar="$emit('ordenar', $event)"
+          >
+            Qtd
+          </SortableHeader>
+          <SortableHeader
+            coluna="categoria"
+            :ordenacao-atual="ordenacao.coluna"
+            :direcao-atual="ordenacao.direcao"
+            @ordenar="$emit('ordenar', $event)"
+          >
+            Categoria
+          </SortableHeader>
           <th>Ações</th>
         </tr>
       </thead>

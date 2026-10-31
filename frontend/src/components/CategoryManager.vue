@@ -62,15 +62,20 @@ defineEmits(['save', 'delete', 'toggle'])
         <button class="button-primary" type="button" @click.stop="$emit('save')">Salvar Categoria</button>
       </div>
 
-      <div v-if="categorias.length" class="categoria-lista">
-        <h3>Categorias cadastradas</h3>
-        <ul class="categoria-lista__items">
-          <li v-for="categoria in categorias" :key="categoria.id" class="categoria-item">
-            <span>{{ categoria.nome }}</span>
+      <!-- Prova de conceito Tailwind (só layout/espaçamento; cores via var() do tema) -->
+      <div v-if="categorias.length" class="mt-6 border-t border-[color:var(--cor-borda)] pt-4">
+        <h3 class="mb-3 text-base text-[color:var(--cor-texto)]">Categorias cadastradas</h3>
+        <ul class="m-0 flex list-none flex-col gap-2 p-0">
+          <li
+            v-for="categoria in categorias"
+            :key="categoria.id"
+            class="flex items-center justify-between gap-3 rounded-xl border border-[color:var(--cor-borda)] bg-[var(--cor-painel)] px-[0.9rem] py-[0.7rem] text-[color:var(--cor-texto)] transition-colors duration-200 hover:border-[rgba(147,197,253,0.3)] hover:bg-[var(--cor-fundo-alt)]"
+          >
+            <span class="text-[color:var(--cor-texto)]">{{ categoria.nome }}</span>
             <button
               v-if="isAdmin"
-              class="button-secondary"
               type="button"
+              class="cursor-pointer rounded-[10px] bg-slate-700 px-3 py-[0.45rem] text-slate-50 transition-colors duration-200 hover:bg-slate-600"
               @click.stop="$emit('delete', categoria.id)"
             >
               Remover
@@ -82,55 +87,3 @@ defineEmits(['save', 'delete', 'toggle'])
     </Transition>
   </section>
 </template>
-
-<style scoped>
-.categoria-lista {
-  margin-top: 1.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--cor-borda);
-}
-
-.categoria-lista h3 {
-  margin-bottom: 0.75rem;
-  font-size: 1rem;
-  color: var(--cor-texto);
-}
-
-.categoria-lista__items {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.categoria-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.7rem 0.9rem;
-  border: 1px solid var(--cor-borda);
-  border-radius: 12px;
-  background: var(--cor-painel);
-  color: var(--cor-texto);
-  transition: border-color 0.2s ease, background-color 0.2s ease;
-}
-
-.categoria-item:hover {
-  border-color: rgba(147, 197, 253, 0.3);
-  background: var(--cor-fundo-alt);
-}
-
-.categoria-item span {
-  color: var(--cor-texto);
-}
-
-.categoria-item button {
-  padding: 0.45rem 0.75rem;
-  background: #334155;
-  color: #f8fafc;
-  border-radius: 10px;
-}
-</style>

@@ -1,123 +1,106 @@
+@import 'tailwindcss';
 @import './base.css';
 
-#app {
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  padding: 0;
-  font-weight: normal;
-}
+/* Em @layer base pelo mesmo motivo do reset no base.css: essas regras miram elementos
+   genéricos (button, a, input...) e, sem camada, sempre venceriam qualquer utilitária
+   do Tailwind aplicada a esses mesmos elementos (ex.: bg-blue-500 num <button>). */
+@layer base {
+  #app {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+  }
 
-body {
-  background: var(--cor-fundo);
-  color: var(--cor-texto);
-  margin: 0;
-}
+  body {
+    background: var(--cor-fundo);
+    color: var(--cor-texto);
+    margin: 0;
+  }
 
-#app {
-  width: 100%;
-  min-height: 100vh;
-}
+  #app {
+    width: 100%;
+    min-height: 100vh;
+  }
 
-input,
-textarea,
-select {
-  background: var(--cor-input);
-  color: var(--cor-texto);
-  border: 1px solid var(--cor-borda-forte);
-  border-radius: 12px;
-  color-scheme: var(--esquema-cor);
-}
+  input,
+  textarea,
+  select {
+    background: var(--cor-input);
+    color: var(--cor-texto);
+    border: 1px solid var(--cor-borda-forte);
+    border-radius: 12px;
+    color-scheme: var(--esquema-cor);
+  }
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus {
-  -webkit-text-fill-color: var(--cor-texto);
-  -webkit-box-shadow: 0 0 0 1000px var(--cor-input) inset;
-  transition: background-color 9999s ease-in-out 0s;
-}
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--cor-texto);
+    -webkit-box-shadow: 0 0 0 1000px var(--cor-input) inset;
+    transition: background-color 9999s ease-in-out 0s;
+  }
 
-button {
-  color: #ffffff;
-  background: #2563eb;
-  border-radius: 10px;
-  padding: 0.7rem 1.2rem;
-  border: none;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
+  button {
+    color: #ffffff;
+    background: #2563eb;
+    border-radius: 10px;
+    padding: 0.7rem 1.2rem;
+    border: none;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
 
-button:hover {
-  background: #1d4ed8;
-  transform: translateY(-1px);
-}
+  button:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+  }
 
-a,
-.green {
-  text-decoration: none;
-  color: var(--cor-link);
-  transition: 0.4s;
-  padding: 3px;
-}
+  a,
+  .green {
+    text-decoration: none;
+    color: var(--cor-link);
+    transition: 0.4s;
+    padding: 3px;
+  }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: var(--cor-link-hover-fundo);
+  @media (hover: hover) {
+    a:hover {
+      background-color: var(--cor-link-hover-fundo);
+    }
   }
 }
 
 .dashboard-page {
-  width: min(100%, 1500px);
-  margin: 0 auto;
-  padding: 58px 80px;
-  min-height: 100vh;
-  background: var(--cor-fundo);
-  color: var(--cor-texto);
-  box-sizing: border-box;
+  @apply w-[min(100%,1500px)] mx-auto pt-[58px] pb-[58px] px-[80px] min-h-screen
+    bg-[var(--cor-fundo)] text-[color:var(--cor-texto)] box-border;
 }
 
 .status-message,
 .status-summary {
-  color: var(--cor-texto-medio);
-  font-size: 1rem;
-  margin: 0;
+  @apply text-[color:var(--cor-texto-medio)] text-[1rem] m-0;
 }
 
 .status-error {
-  color: var(--cor-erro-texto);
-  font-size: 1rem;
-  margin: 0;
+  @apply text-[color:var(--cor-erro-texto)] text-[1rem] m-0;
 }
 
 .page-view {
-  padding: 72px 96px;
-  min-height: 100vh;
-  color: var(--cor-texto);
-  background: var(--cor-fundo);
+  @apply py-[72px] px-[96px] min-h-screen text-[color:var(--cor-texto)] bg-[var(--cor-fundo)];
 }
 
 .dashboard-page.page-view {
-  width: min(100%, 1500px);
-  max-width: 1500px;
-  margin: 0 auto;
-  padding: 72px 64px 48px;
-  box-sizing: border-box;
+  @apply w-[min(100%,1500px)] max-w-[1500px] mx-auto pt-[72px] px-[64px] pb-[48px] box-border;
 }
 
 .page-view .page-header,
 .page-view .page-panel,
 .page-view .table-card {
-  max-width: 1320px;
-  margin-left: auto;
-  margin-right: auto;
+  @apply max-w-[1320px] mx-auto;
 }
 
 .page-header {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 2.5rem;
-  margin-bottom: 3.5rem;
+  @apply flex flex-wrap justify-between items-start gap-10 mb-14;
 }
 
 .page-title {
@@ -136,20 +119,19 @@ a,
 }
 
 .page-panel {
-  background: var(--cor-painel);
-  padding: 32px;
-  border-radius: 24px;
-  border: 1px solid var(--cor-borda);
-  box-shadow: 0 22px 48px var(--sombra-painel);
-  margin-bottom: 2rem;
+  @apply bg-[var(--cor-painel)] p-[32px] rounded-[24px] border border-[color:var(--cor-borda)]
+    shadow-[0_22px_48px_var(--sombra-painel)] mb-8;
+  /* mantido como propriedade normal: o timing "ease" (não "ease-in-out") não tem
+     utilitária nomeada equivalente no Tailwind, então @apply mudaria a curva da transição. */
   transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease,
     background-color 0.25s ease, color 0.25s ease;
 }
 
 .page-panel:hover {
+  @apply border-[rgba(147,197,253,0.35)] shadow-[0_24px_60px_var(--sombra-painel-forte)];
+  /* mantido como propriedade normal: a utilitária translate-y do Tailwind anima via
+     "translate", não "transform" — a transição declarada acima só escuta "transform". */
   transform: translateY(-4px);
-  border-color: rgba(147, 197, 253, 0.35);
-  box-shadow: 0 24px 60px var(--sombra-painel-forte);
 }
 
 .fade-enter-active,
@@ -159,12 +141,11 @@ a,
 
 .fade-enter-from,
 .fade-leave-to {
-  opacity: 0;
+  @apply opacity-0;
 }
 
 .page-panel--grid {
-  display: grid;
-  gap: 1.5rem;
+  @apply grid gap-6;
 }
 
 .product-sections {
@@ -343,32 +324,24 @@ a,
 }
 
 .form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
+  @apply grid grid-cols-2 gap-4;
 }
 
 .form-grid-full {
-  grid-column: 1 / -1;
+  @apply col-span-full;
 }
 
 .form-field label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: var(--cor-texto-medio);
-  font-weight: 600;
+  @apply block mb-2 text-[color:var(--cor-texto-medio)] font-semibold;
 }
 
 .form-field input,
 .form-field select,
 .form-field textarea {
-  box-sizing: border-box;
-  width: 100%;
-  padding: 12px 14px;
-  border-radius: 14px;
-  border: 1px solid var(--cor-borda);
-  background: var(--cor-input);
-  color: var(--cor-texto);
+  @apply box-border w-full py-[12px] px-[14px] rounded-[14px] border border-[color:var(--cor-borda)]
+    bg-[var(--cor-input)] text-[color:var(--cor-texto)];
+  /* mantido como propriedade normal: o timing "ease" não tem utilitária nomeada
+     equivalente no Tailwind (só ease-in-out, ease-in, ease-out, ease-linear). */
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease,
     color 0.2s ease;
 }
@@ -376,27 +349,19 @@ a,
 .form-field input:focus,
 .form-field select:focus,
 .form-field textarea:focus {
-  outline: none;
-  border-color: #60a5fa;
-  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.14);
+  @apply outline-none border-[#60a5fa] shadow-[0_0_0_3px_rgba(96,165,250,0.14)];
 }
 
 .form-field textarea {
-  max-width: 100%;
-  min-height: 100px;
-  resize: vertical;
+  @apply max-w-full min-h-[100px] resize-y;
 }
 
 .form-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 1.25rem;
-  align-items: center;
+  @apply flex flex-wrap gap-4 mt-5 items-center;
 }
 
 .form-actions button {
-  min-width: 150px;
+  @apply min-w-[150px];
 }
 
 .button-primary {
@@ -434,84 +399,65 @@ a,
 }
 
 .status-inline {
-  margin-bottom: 1rem;
+  @apply mb-4;
 }
 
 .status-inline.error {
-  color: var(--cor-erro-texto);
+  @apply text-[color:var(--cor-erro-texto)];
 }
 
 .status-inline.success {
-  color: var(--cor-sucesso-texto);
+  @apply text-[color:var(--cor-sucesso-texto)];
 }
 
 .table-card {
-  overflow-x: auto;
-  border-radius: 22px;
-  background: var(--cor-fundo-alt);
-  border: 1px solid var(--cor-borda);
+  @apply overflow-x-auto rounded-[22px] bg-[var(--cor-fundo-alt)] border border-[color:var(--cor-borda)];
 }
 
 .table-card table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 760px;
+  @apply w-full border-collapse min-w-[760px];
 }
 
 .table-card th,
 .table-card td {
-  padding: 14px 16px;
-  text-align: left;
-  border-bottom: 1px solid var(--cor-borda);
-  color: var(--cor-texto);
+  @apply py-[14px] px-[16px] text-left border-b border-[color:var(--cor-borda)] text-[color:var(--cor-texto)];
 }
 
 .table-card thead {
-  background: var(--cor-tabela-cabecalho);
+  @apply bg-[var(--cor-tabela-cabecalho)];
 }
 
 .table-card th {
-  color: var(--cor-texto-medio);
-  font-weight: 700;
+  @apply text-[color:var(--cor-texto-medio)] font-bold;
 }
 
 .table-card tbody tr:hover {
-  background: var(--cor-hover-linha);
+  @apply bg-[var(--cor-hover-linha)];
 }
 
 .table-card button {
-  min-width: 90px;
+  @apply min-w-[90px];
 }
 
 .table-card .table-actions {
-  display: inline-flex;
-  gap: 0.7rem;
-  align-items: center;
-  flex-wrap: nowrap;
-  justify-content: flex-end;
+  @apply inline-flex gap-[0.7rem] items-center flex-nowrap justify-end;
 }
 
 .table-card .table-actions button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 44px;
-  line-height: 1;
-  margin: 0;
-  white-space: nowrap;
+  @apply inline-flex items-center justify-center min-h-[44px] leading-none m-0 whitespace-nowrap;
 }
 
 .table-card td {
-  vertical-align: middle;
+  @apply align-middle;
 }
 
 .table-card td.numeric,
 .table-card th.numeric {
-  text-align: right;
+  @apply text-right;
 }
 
 .table-card td.currency {
-  white-space: nowrap;
+  @apply whitespace-nowrap;
 }
 
 @media (max-width: 900px) {
@@ -541,26 +487,25 @@ a,
 
 @media (max-width: 900px) {
   .page-view {
-    padding: 40px 24px;
+    @apply py-[40px] px-[24px];
   }
 
   .dashboard-page.page-view {
-    padding: 40px 24px 32px;
+    @apply pt-[40px] px-[24px] pb-[32px];
   }
 }
 
 @media (max-width: 600px) {
   .page-view {
-    padding: 28px 16px;
+    @apply py-[28px] px-[16px];
   }
 
   .dashboard-page.page-view {
-    padding: 28px 16px 24px;
+    @apply pt-[28px] px-[16px] pb-[24px];
   }
 
   .page-panel {
-    padding: 20px;
-    border-radius: 18px;
+    @apply p-[20px] rounded-[18px];
   }
 
   .product-sections .page-panel {
@@ -578,7 +523,7 @@ a,
 
   .table-card th,
   .table-card td {
-    padding: 10px 12px;
+    @apply py-[10px] px-[12px];
   }
 }
 
@@ -589,7 +534,9 @@ a,
 
 .route-fade-enter-from,
 .route-fade-leave-to {
-  opacity: 0;
+  @apply opacity-0;
+  /* mantido como propriedade normal (não translate-y-*): a utilitária de translate
+     do Tailwind anima via "translate", mas a transição acima escuta "transform". */
   transform: translateY(10px);
 }
 

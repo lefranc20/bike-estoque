@@ -63,36 +63,41 @@
   --esquema-cor: light;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  font-weight: normal;
-  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
-}
+/* Envolvido em @layer base pra conviver com o Tailwind: sem isso, esse reset (sem camada)
+   sempre venceria qualquer utilitária do Tailwind (que vive em @layer utilities),
+   não importa a especificidade — é assim que a cascata de @layer funciona. */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    font-weight: normal;
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  }
 
-body {
-  min-height: 100vh;
-  color: var(--cor-texto);
-  background: var(--cor-fundo);
-  transition: color 0.3s ease, background-color 0.3s ease;
-  line-height: 1.6;
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    'Fira Sans',
-    'Droid Sans',
-    'Helvetica Neue',
-    sans-serif;
-  font-size: 15px;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  body {
+    min-height: 100vh;
+    color: var(--cor-texto);
+    background: var(--cor-fundo);
+    transition: color 0.3s ease, background-color 0.3s ease;
+    line-height: 1.6;
+    font-family:
+      Inter,
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      Roboto,
+      Oxygen,
+      Ubuntu,
+      Cantarell,
+      'Fira Sans',
+      'Droid Sans',
+      'Helvetica Neue',
+      sans-serif;
+    font-size: 15px;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
