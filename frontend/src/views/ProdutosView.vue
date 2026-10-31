@@ -107,6 +107,7 @@ function limparFormulario() {
 async function salvar() {
   errors.value = {}
   erro.value = null
+  produtoSucesso.value = null
 
   if (!form.value.categoria_id) {
     errors.value.categoria_id = ['Selecione uma categoria']
